@@ -19,6 +19,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        Button navToAllTasks = MainActivity.this.findViewById(R.id.buttonMain_allTask);
+        navToAllTasks.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, AllTasks.class);
+            startActivity(intent);
+        });
+
+
     }
 
 }

@@ -19,3 +19,7 @@ When users click the submit button, show a “submitted!” label on the page.
 It needs no functionality.
 
 ![All Tasks Page](../screenshots/lab26/all_tasks.png)
+
+### Resources :
+
+[Toasts](https://developer.android.com/guide/topics/ui/notifiers/toasts.html)

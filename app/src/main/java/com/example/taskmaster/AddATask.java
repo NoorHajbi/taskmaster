@@ -26,4 +26,3 @@ public class AddATask extends AppCompatActivity {
 
 }
 
-//https://developer.android.com/guide/topics/ui/notifiers/toasts.html

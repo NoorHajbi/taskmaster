@@ -1,24 +1,35 @@
 # taskmaster
 
-## Lab: 26 - Beginning TaskMaster
+## Lab: 27 - Data in TaskMaster
 
-### - We were givin wireframes for 3 pages, that are : 
+Is to add the ability to send data among different activities in my application using SharedPreferences and Intents.
 
-#### 1. **Homepage**
-The buttons at the bottom of the page to allow going to the "Add Tasks" and "All Tasks" page.
 
-![Home Page](screenshots/home_page.png)
+### - Feature Tasks : 
 
-#### 2. **Add a Task**
+#### 1. **Task Detail Page**
+Create a Task Detail page. It should have a title at the top of the page, and a Lorem Ipsum description.
 
-![Add A Task Page](screenshots/add_a_task.png)
+![Task Detail Page](screenshots/lab27/taskDetail.png)
 
-When users click the submit button, show a “submitted!” label on the page.
+#### 2. **Settings Page** 
+Create a Settings page. It should allow users to enter their username and hit save.
 
-![Add A Task Page - On button Click](screenshots/add_a_task_submitted.png)
+![Settings Page](screenshots/lab27/settings.png)
 
-#### 3. **All Tasks**
-It needs no functionality.
 
-![All Tasks Page](screenshots/all_tasks.png)
+#### 3. **Homepage** 
+The main page should be modified to contain three different buttons with hardcoded task titles. When a user taps one of the titles, it should go to the Task Detail page, and the title at the top of the page should match the task title that was tapped on the previous page.
 
+The homepage should also contain a button to visit the Settings page, and once the user has entered their username, it should display "{username}'s tasks" above the three task buttons.
+
+
+![Homepage](screenshots/lab27/home_page.png)
+
+
+
+## Previous labs documentation
+
+| Lab no.       | Link to the documentation  |         
+| ------------|-----------------------------|
+|Lab: 26|[Beginning TaskMaster](labs/LAB26.md)|

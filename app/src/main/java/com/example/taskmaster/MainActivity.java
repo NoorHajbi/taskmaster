@@ -7,14 +7,34 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.taskmaster.adapter.TaskAdapter;
+import com.example.taskmaster.model.State;
+import com.example.taskmaster.model.Task;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static final String TASK_NAME = "task_name";
+    public static final String TASK_BODY = "task_body";
+    public static final String TASK_STATE = "task_state";
+
+    private static final String TAG = "MainActivity";
+    private List<Task> tasks;
+    private TaskAdapter adapter;
 
     @Override
     public void onResume() { // this is probably the correct place for ALL rendered info
@@ -25,12 +45,66 @@ public class MainActivity extends AppCompatActivity {
         address.setText(preferences.getString("username", "Go to Settings to set your username"));
     }
 
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        /*Lab28*/
 
+        RecyclerView taskRecyclerView = findViewById(R.id.recyclerView_task);
+
+        tasks = new ArrayList<>();
+        tasks.add(new Task("First", "First body"));
+        tasks.add(new Task("Second", "Second body"));
+        tasks.add(new Task("Third", "Third body"));
+        tasks.add(new Task("Done", "Trash body"));
+
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor preferenceEditor = preferences.edit();
+        adapter = new TaskAdapter(tasks, new TaskAdapter.OnTaskItemClickListener() {
+
+            @Override
+            public void onItemClicked(int position) {
+                if (position == 0)
+                    tasks.get(position).setState(State.NEW);
+                else if (position == 1)
+                    tasks.get(position).setState(State.ASSIGNED);
+
+                else if (position == 2)
+                    tasks.get(position).setState(State.IN_PROGRESS);
+                else
+                    tasks.get(position).setState(State.COMPLETE);
+
+                Intent goToDetailsIntent = new Intent(getApplicationContext(), TaskDetail.class);
+                preferenceEditor.putString(TASK_NAME, tasks.get(position).getTitle());
+                preferenceEditor.putString(TASK_BODY, tasks.get(position).getBody());
+                preferenceEditor.putString(TASK_STATE, tasks.get(position).getState().toString());
+                preferenceEditor.apply();
+
+
+                startActivity(goToDetailsIntent);
+            }
+
+            @Override
+            public void onDeleteItem(int position) {
+                tasks.remove(position);
+                Log.i(TAG, "onDeleteItem: our list =>>>> " + tasks.toString());
+                listItemDeleted();
+            }
+        });
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(
+                this,
+                LinearLayoutManager.VERTICAL,
+                false);
+        taskRecyclerView.setLayoutManager(linearLayoutManager);
+        taskRecyclerView.setAdapter(adapter);
+
+
+        /*End of Lab28*/
         Button navToAddTask = MainActivity.this.findViewById(R.id.buttonMain_addTask);
         navToAddTask.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, AddATask.class);
@@ -58,35 +132,61 @@ public class MainActivity extends AppCompatActivity {
         notificationManager.createNotificationChannel(channel);
 
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor preferenceEditor = preferences.edit();
+//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        SharedPreferences.Editor preferenceEditor = preferences.edit();
+//
+//        Button selectFirstTask = MainActivity.this.findViewById(R.id.button_firstTask);
+//        selectFirstTask.setOnClickListener(view -> {
+//            Intent intent = new Intent(MainActivity.this, TaskDetail.class);
+//            Button firstButton = findViewById(R.id.button_firstTask);
+//            preferenceEditor.putString("taskTitle", firstButton.getText().toString());
+//            preferenceEditor.apply();
+//            MainActivity.this.startActivity(intent);
+//        });
+//
+//        Button selectSecondTask = MainActivity.this.findViewById(R.id.button_secondTask);
+//        selectSecondTask.setOnClickListener(view -> {
+//            Intent intent = new Intent(MainActivity.this, TaskDetail.class);
+//            Button secondButton = findViewById(R.id.button_secondTask);
+//            preferenceEditor.putString("taskTitle", secondButton.getText().toString());
+//            preferenceEditor.apply();
+//            MainActivity.this.startActivity(intent);
+//        });
+//
+//        Button selectThirdTask = MainActivity.this.findViewById(R.id.button_thirdTask);
+//        selectThirdTask.setOnClickListener(view -> {
+//            Intent i = new Intent(MainActivity.this, TaskDetail.class);
+//            Button thirdButton = findViewById(R.id.button_thirdTask);
+//            preferenceEditor.putString("taskTitle", thirdButton.getText().toString());
+//            preferenceEditor.apply();
+//            MainActivity.this.startActivity(i);
+//        });
 
-        Button selectFirstTask = MainActivity.this.findViewById(R.id.button_firstTask);
-        selectFirstTask.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, TaskDetail.class);
-            Button firstButton = findViewById(R.id.button_firstTask);
-            preferenceEditor.putString("taskTitle", firstButton.getText().toString());
-            preferenceEditor.apply();
-            MainActivity.this.startActivity(intent);
-        });
+    }
 
-        Button selectSecondTask = MainActivity.this.findViewById(R.id.button_secondTask);
-        selectSecondTask.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, TaskDetail.class);
-            Button secondButton = findViewById(R.id.button_secondTask);
-            preferenceEditor.putString("taskTitle", secondButton.getText().toString());
-            preferenceEditor.apply();
-            MainActivity.this.startActivity(intent);
-        });
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
-        Button selectThirdTask = MainActivity.this.findViewById(R.id.button_thirdTask);
-        selectThirdTask.setOnClickListener(view -> {
-            Intent i = new Intent(MainActivity.this, TaskDetail.class);
-            Button thirdButton = findViewById(R.id.button_thirdTask);
-            preferenceEditor.putString("taskTitle", thirdButton.getText().toString());
-            preferenceEditor.apply();
-            MainActivity.this.startActivity(i);
-        });
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
 
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void listItemDeleted() {
+        adapter.notifyDataSetChanged();
     }
 }

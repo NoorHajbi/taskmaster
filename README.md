@@ -10,8 +10,6 @@ Is to refactor my homepage, with a RecyclerView full of Task data.
 #### 1. **Task Model**
 Create a Task class. A Task should have a title, a body, and a state. The state should be one of "new", "assigned", "in progress", or "complete".
 
-![Task Model](screenshots/lab28/taskDetail.png)
-
 #### 2. **Homepage** 
 Refactor your homepage to use a RecyclerView for displaying Task data. This should have hardcoded Task data for now.
 
@@ -23,6 +21,7 @@ Ensure that you can tap on any one of the Tasks in the RecyclerView, and it will
 
 ![Homepage](screenshots/lab28/settings.png)
 
+![Task Model](screenshots/lab28/taskDetail.png)
 
 
 

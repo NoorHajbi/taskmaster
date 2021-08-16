@@ -19,10 +19,11 @@ Create a ViewAdapter class that displays data from a list of Tasks.
 In your MainActivity, create at least three hardcoded Task instances and use those to populate your RecyclerView/ViewAdapter.
 Ensure that you can tap on any one of the Tasks in the RecyclerView, and it will appropriately launch the detail page with the correct Task title displayed.
 
-![Homepage](screenshots/lab28/settings.png)
+![Homepage1](screenshots/lab28/home_page1.png)
+![Homepage2](screenshots/lab28/home_page2.png)
 
-![Task Model](screenshots/lab28/taskDetail.png)
-
+![DetailPage1](screenshots/lab28/detail_page1.png)
+![DetailPage2](screenshots/lab28/detail_page2.png)
 
 
 

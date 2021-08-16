@@ -5,7 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -50,7 +50,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
         holder.taskTitle.setText(oneTask.getTitle());
         holder.taskBody.setText(oneTask.getBody());
-        holder.taskState.setText(oneTask.getState());
+//        holder.taskState.setText(oneTask.getState());
 
         Log.i(TAG, "onBindViewHolder: Called for position" + position);
 
@@ -74,7 +74,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             taskBody = itemView.findViewById(R.id.task_body);
             taskState = itemView.findViewById(R.id.task_state);
 
-            TextView delete = itemView.findViewById(R.id.delete);
+            ImageButton delete = itemView.findViewById(R.id.delete);
 
             itemView.setOnClickListener(v -> {
                 Log.i(TAG, "onClick: called");

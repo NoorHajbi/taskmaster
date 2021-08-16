@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.taskmaster.adapter.TaskAdapter;
+import com.example.taskmaster.model.State;
 import com.example.taskmaster.model.Task;
 
 import java.util.ArrayList;
@@ -55,9 +56,10 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView taskRecyclerView = findViewById(R.id.recyclerView_task);
 
         tasks = new ArrayList<>();
-        tasks.add(new Task("First", "First body", "First state"));
-        tasks.add(new Task("Second", "Second body", "Second state"));
-        tasks.add(new Task("Third", "Third body", "Third state"));
+        tasks.add(new Task("First", "First body"));
+        tasks.add(new Task("Second", "Second body"));
+        tasks.add(new Task("Third", "Third body"));
+        tasks.add(new Task("Done", "Trash body"));
 
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -66,11 +68,20 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onItemClicked(int position) {
+                if (position == 0)
+                    tasks.get(position).setState(State.NEW);
+                else if (position == 1)
+                    tasks.get(position).setState(State.ASSIGNED);
+
+                else if (position == 2)
+                    tasks.get(position).setState(State.IN_PROGRESS);
+                else
+                    tasks.get(position).setState(State.COMPLETE);
 
                 Intent goToDetailsIntent = new Intent(getApplicationContext(), TaskDetail.class);
                 preferenceEditor.putString(TASK_NAME, tasks.get(position).getTitle());
                 preferenceEditor.putString(TASK_BODY, tasks.get(position).getBody());
-                preferenceEditor.putString(TASK_STATE, tasks.get(position).getState());
+                preferenceEditor.putString(TASK_STATE, tasks.get(position).getState().toString());
                 preferenceEditor.apply();
 
 

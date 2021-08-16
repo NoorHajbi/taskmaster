@@ -44,41 +44,41 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
-<!--    <Button-->
-<!--        android:id="@+id/button_firstTask"-->
-<!--        android:layout_width="225dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:layout_marginTop="92dp"-->
-<!--        android:background="@color/purple_500"-->
-<!--        android:text="@string/go_to_shopping"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.451"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/text_myTasks" />-->
+    <!--    <Button-->
+    <!--        android:id="@+id/button_firstTask"-->
+    <!--        android:layout_width="225dp"-->
+    <!--        android:layout_height="50dp"-->
+    <!--        android:layout_marginTop="92dp"-->
+    <!--        android:background="@color/purple_500"-->
+    <!--        android:text="@string/go_to_shopping"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.451"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/text_myTasks" />-->
 
-<!--    <Button-->
-<!--        android:id="@+id/button_secondTask"-->
-<!--        android:layout_width="225dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:layout_marginTop="32dp"-->
-<!--        android:background="@color/purple_500"-->
-<!--        android:text="@string/studying"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.451"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/button_firstTask" />-->
+    <!--    <Button-->
+    <!--        android:id="@+id/button_secondTask"-->
+    <!--        android:layout_width="225dp"-->
+    <!--        android:layout_height="50dp"-->
+    <!--        android:layout_marginTop="32dp"-->
+    <!--        android:background="@color/purple_500"-->
+    <!--        android:text="@string/studying"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.451"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/button_firstTask" />-->
 
-<!--    <Button-->
-<!--        android:id="@+id/button_thirdTask"-->
-<!--        android:layout_width="225dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:layout_marginTop="32dp"-->
-<!--        android:background="@color/purple_500"-->
-<!--        android:text="@string/prepare_food"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.451"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/button_secondTask" />-->
+    <!--    <Button-->
+    <!--        android:id="@+id/button_thirdTask"-->
+    <!--        android:layout_width="225dp"-->
+    <!--        android:layout_height="50dp"-->
+    <!--        android:layout_marginTop="32dp"-->
+    <!--        android:background="@color/purple_500"-->
+    <!--        android:text="@string/prepare_food"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.451"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/button_secondTask" />-->
 
 
     <Button
@@ -91,8 +91,7 @@
         app:layout_constraintEnd_toStartOf="@+id/buttonMain_allTask"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView_task"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView_task" />
 
 
     <Button

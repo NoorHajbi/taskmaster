@@ -1,12 +1,15 @@
 package com.example.taskmaster;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +21,7 @@ import com.example.taskmaster.model.Task;
 
 public class AddATask extends AppCompatActivity {
     AppDatabase database;
+    EditText editTitle;
 
 
     @Override
@@ -28,7 +32,7 @@ public class AddATask extends AppCompatActivity {
         database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "task_DB")
                 .allowMainThreadQueries()
                 .build();
-        EditText editTitle = AddATask.this.findViewById(R.id.edit_myTask);
+        editTitle = AddATask.this.findViewById(R.id.edit_myTask);
         EditText editDescription = AddATask.this.findViewById(R.id.edit_doSomething);
 
         Context context = getApplicationContext();
@@ -46,6 +50,22 @@ public class AddATask extends AppCompatActivity {
 
         });
 
+    }
+
+    @SuppressLint({"NonConstantResourceId", "SetTextI18n"})
+    public void onClick(View view) {
+//        Log.i(TAG, "onClick: new way was called");
+
+        switch (view.getId()) {
+            case R.id.buttonMain_addTask:
+                editTitle.setText("Hello");
+                break;
+            case R.id.button_addTask:
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra("input", editTitle.getText().toString());
+                startActivity(intent);
+                break;
+        }
     }
 
 }

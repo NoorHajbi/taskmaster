@@ -18,6 +18,10 @@ public interface TaskDao {
     @Query("SELECT * FROM task WHERE task_title LIKE :title")
     Task findByTitle(String title);
 
+    //why byId doesn't work !
+//    @Query("SELECT * FROM task WHERE id like :id")
+//    Task findById(long id);
+
     @Query("SELECT * FROM task")
     List<Task> findAll();
 

@@ -1,30 +1,24 @@
 # taskmaster
 
-# Lab: 29 - Room
-Is to our refactor your model layer to store Task data in a local database.
+# Lab: 31 - Espresso and Polish
+Is to add UI tests to the application, and polish any remaining feature tasks from previous labs.
 
-## - Feature Tasks : 
-
-### 1. Task Model and Room
-Set up Room in your application, and modify your Task class to be an Entity.
-
-### 2. Add Task Form
-Modify your Add Task form to save the data entered in as a Task in your local database.
-![Add A Task Page](/screenshots/lab29/add_a_task.png)
+## Feature Tasks
+### 1. Espresso Testing
+Add Espresso to the application, and use it to test basic functionality of the main components of the application.
 
 
-### 3. Homepage
-Refactor your homepage's RecyclerView to display all Task entities in your database.
-![Homepage](/screenshots/lab29/home_page.png)
+- assert that important UI elements are displayed on the page
+tap on a task, and assert that the resulting activity displays the name of that task
+edit the user’s username, and assert that it says the correct thing on the homepage
 
 
-### 4. Detail Page
-Ensure that the description and status of a tapped task are also displayed on the detail page, in addition to the title. (Note that you can accomplish this by passing along the entire Task entity, or by passing along only its ID in the intent.)
-![Task Detail Page](/screenshots/lab29/detail_page.png)
+## Stretch Goals
+Allow the user to specify on their settings page how many tasks should be shown on the homepage. Use this to dynamically display as many tasks as the user requests for display in the RecyclerView. Test this functionality using Espresso.
 
 
-## Testing
-Ensure that you have used Espresso to test relevant functionality of your application; for instance, tap on an item on the My Tasks page, and ensure that the correct details are rendered on the Detail page.
+## Resources
+[Espresso Testing](https://developer.android.com/training/testing/espresso)
 
 
 

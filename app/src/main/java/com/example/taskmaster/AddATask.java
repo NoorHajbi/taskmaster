@@ -38,10 +38,12 @@ public class AddATask extends AppCompatActivity {
         Button addTaskButton = AddATask.this.findViewById(R.id.button_addTask);
         addTaskButton.setOnClickListener(view -> {
             toast.show();
-            Task newTask = new Task(editTitle.getText().toString(), editDescription.getText().toString());
-            database.taskDao().insertOne(newTask);
+            // save data
+            Task task = new Task(editTitle.getText().toString(), editDescription.getText().toString());
+            database.taskDao().insertOne(task);
             Intent goToMainActivity = new Intent(AddATask.this, MainActivity.class);
             AddATask.this.startActivity(goToMainActivity);
+
         });
 
     }

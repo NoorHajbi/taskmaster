@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import com.example.taskmaster.adapter.DB.AppDatabase;
+import com.example.taskmaster.adapter.DB.TaskDao;
 import com.example.taskmaster.adapter.TaskAdapter;
 import com.example.taskmaster.model.State;
 import com.example.taskmaster.model.Task;
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private TaskAdapter adapter;
 
     AppDatabase database;
+    private TaskDao taskDao;
+
 
     @Override
     public void onResume() { // this is probably the correct place for ALL rendered info
@@ -59,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
         database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "task_DB")
                 .allowMainThreadQueries()
                 .build();
+        taskDao = database.taskDao();
+
 
         /*Lab28*/
 
@@ -72,9 +77,9 @@ public class MainActivity extends AppCompatActivity {
 //        tasks.add(new Task("Done", "Trash body"));
 
 
-//
-//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        SharedPreferences.Editor preferenceEditor = preferences.edit();
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor preferenceEditor = preferences.edit();
         adapter = new TaskAdapter(tasks, new TaskAdapter.OnTaskItemClickListener() {
 
             @Override
@@ -90,10 +95,10 @@ public class MainActivity extends AppCompatActivity {
                     tasks.get(position).setState(State.COMPLETE);
 
                 Intent goToDetailsIntent = new Intent(getApplicationContext(), TaskDetail.class);
-//                preferenceEditor.putString(TASK_NAME, tasks.get(position).getTitle());
-//                preferenceEditor.putString(TASK_BODY, tasks.get(position).getBody());
-//                preferenceEditor.putString(TASK_STATE, tasks.get(position).getState().toString());
-//                preferenceEditor.apply();
+                preferenceEditor.putString(TASK_NAME, tasks.get(position).getTitle());
+                preferenceEditor.putString(TASK_BODY, tasks.get(position).getBody());
+                preferenceEditor.putString(TASK_STATE, tasks.get(position).getState().toString());
+                preferenceEditor.apply();
 
 
                 startActivity(goToDetailsIntent);

@@ -1,4 +1,4 @@
-## Lab: 26 - Beginning TaskMaster
+# Lab: 26 - Beginning TaskMaster
 
 ### - We were givin wireframes for 3 pages, that are : 
 

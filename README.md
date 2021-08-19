@@ -6,7 +6,7 @@ Is to our refactor your model layer to store Task data in a local database.
 ### - Feature Tasks : 
 
 #### 1. Task Model and Room
-Following the directions provided in the Android documentation, set up Room in your application, and modify your Task class to be an Entity.
+Set up Room in your application, and modify your Task class to be an Entity.
 
 #### 2. Add Task Form
 Modify your Add Task form to save the data entered in as a Task in your local database.

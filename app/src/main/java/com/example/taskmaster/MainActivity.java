@@ -18,7 +18,9 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
+import com.example.taskmaster.adapter.DB.AppDatabase;
 import com.example.taskmaster.adapter.TaskAdapter;
 import com.example.taskmaster.model.State;
 import com.example.taskmaster.model.Task;
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     private List<Task> tasks;
     private TaskAdapter adapter;
 
+    AppDatabase database;
+
     @Override
     public void onResume() { // this is probably the correct place for ALL rendered info
 
@@ -51,19 +55,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        /*Lab29*/
+        database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "task_DB")
+                .allowMainThreadQueries()
+                .build();
+
         /*Lab28*/
 
         RecyclerView taskRecyclerView = findViewById(R.id.recyclerView_task);
+        ArrayList<Task> tasks = (ArrayList<Task>) database.taskDao().findAll();
 
-        tasks = new ArrayList<>();
-        tasks.add(new Task("First", "First body"));
-        tasks.add(new Task("Second", "Second body"));
-        tasks.add(new Task("Third", "Third body"));
-        tasks.add(new Task("Done", "Trash body"));
+//        tasks = new ArrayList<>();
+//        tasks.add(new Task("First", "First body"));
+//        tasks.add(new Task("Second", "Second body"));
+//        tasks.add(new Task("Third", "Third body"));
+//        tasks.add(new Task("Done", "Trash body"));
 
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor preferenceEditor = preferences.edit();
+//
+//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        SharedPreferences.Editor preferenceEditor = preferences.edit();
         adapter = new TaskAdapter(tasks, new TaskAdapter.OnTaskItemClickListener() {
 
             @Override
@@ -79,10 +90,10 @@ public class MainActivity extends AppCompatActivity {
                     tasks.get(position).setState(State.COMPLETE);
 
                 Intent goToDetailsIntent = new Intent(getApplicationContext(), TaskDetail.class);
-                preferenceEditor.putString(TASK_NAME, tasks.get(position).getTitle());
-                preferenceEditor.putString(TASK_BODY, tasks.get(position).getBody());
-                preferenceEditor.putString(TASK_STATE, tasks.get(position).getState().toString());
-                preferenceEditor.apply();
+//                preferenceEditor.putString(TASK_NAME, tasks.get(position).getTitle());
+//                preferenceEditor.putString(TASK_BODY, tasks.get(position).getBody());
+//                preferenceEditor.putString(TASK_STATE, tasks.get(position).getState().toString());
+//                preferenceEditor.apply();
 
 
                 startActivity(goToDetailsIntent);

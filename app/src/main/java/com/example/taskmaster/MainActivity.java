@@ -20,6 +20,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import com.amplifyframework.AmplifyException;
+import com.amplifyframework.core.Amplify;
+import com.amplifyframework.datastore.AWSDataStorePlugin;
+import com.amplifyframework.datastore.generated.model.Todo;
 import com.example.taskmaster.adapter.DB.AppDatabase;
 import com.example.taskmaster.adapter.DB.TaskDao;
 import com.example.taskmaster.adapter.TaskAdapter;
@@ -58,13 +62,48 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        /*Lab32*/
+        try {
+            Amplify.addPlugin(new AWSDataStorePlugin());
+            Amplify.configure(getApplicationContext());
+
+            Log.i("Tutorial", "Initialized Amplify");
+        } catch (AmplifyException e) {
+            Log.e("Tutorial", "Could not initialize Amplify", e);
+        }
+        Task item = Task.builder()
+                .title("Build Android application")
+                .State(State.NEW)
+                .build();
+        Amplify.DataStore.save(item,
+                success -> Log.i("Tutorial", "Saved item: " + success.item().getTitle),
+                error -> Log.e("Tutorial", "Could not save item to DataStore", error)
+        );
+        Amplify.DataStore.query(Task.class,
+                tasks -> {
+                    while (tasks.hasNext()) {
+                        Task task = tasks.next();
+
+                        Log.i("Tutorial", "==== Todo ====");
+                        Log.i("Tutorial", "Name: " + task.getTitle());
+
+                        if (task.getState() != null) {
+                            Log.i("Tutorial", "Priority: " + task.getState().toString());
+                        }
+
+                        if (task.getBody() != null) {
+                            Log.i("Tutorial", "CompletedAt: " + task.getBody().toString());
+                        }
+                    }
+                },
+                failure -> Log.e("Tutorial", "Could not query DataStore", failure)
+        );
+
         /*Lab29*/
         database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "task_DB")
                 .allowMainThreadQueries()
                 .build();
         taskDao = database.taskDao();
-
-
         /*Lab28*/
 
         RecyclerView taskRecyclerView = findViewById(R.id.recyclerView_task);

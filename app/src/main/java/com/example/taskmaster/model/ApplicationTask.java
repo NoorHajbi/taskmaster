@@ -4,9 +4,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-//The state should be one of "new", "assigned", "in progress", or "complete".
 @Entity
-public class Task {
+public class ApplicationTask {
 
     @PrimaryKey(autoGenerate = true)
     private long id;
@@ -16,10 +15,15 @@ public class Task {
     String body;
     State state;
 
-    public Task(String title, String body) {
+//    public ApplicationTask(String title, String body) {
+//        this.title = title;
+//        this.body = body;
+//        this.state = State.NEW;
+//    }
+    public ApplicationTask(String title, String body, State state) {
         this.title = title;
         this.body = body;
-        this.state = State.NEW;
+        this.state = state;
     }
 
     public String getTitle() {

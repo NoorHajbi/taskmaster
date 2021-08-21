@@ -10,18 +10,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.core.Amplify;
+import com.amplifyframework.datastore.generated.model.State;
 import com.amplifyframework.datastore.generated.model.Task;
 import com.example.taskmaster.DB.AppDatabase;
 
 public class AddATask extends AppCompatActivity {
     //    AppDatabase database;
-    EditText editTitle;
+    private EditText editTitle;
+    private EditText editDescription;
+    private static final String[] paths = {"new", "assigned", "in progress", "complete"};
+    private int selectedState;
 
 
     @Override
@@ -32,9 +39,39 @@ public class AddATask extends AppCompatActivity {
 //        database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "task_DB")
 //                .allowMainThreadQueries()
 //                .build();
-        editTitle = AddATask.this.findViewById(R.id.edit_myTask);
-        EditText editDescription = AddATask.this.findViewById(R.id.edit_doSomething);
 
+        /**
+         * for the spinner part
+         */
+        Spinner spinner = findViewById(R.id.spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(AddATask.this,
+                android.R.layout.simple_spinner_item, paths);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view,
+                                       int position, long id) {
+                Object item = adapterView.getItemAtPosition(position);
+                if (item != null) {
+                    selectedState = item.toString().equals("new") ? 0 : item.toString().equals("assigned") ? 1 : item.toString().equals("in progress") ? 2 : 3;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                selectedState = 1;
+            }
+        });
+        /**
+         * spinnerPartIsFinished
+         **/
+
+        /**
+         * Title and body part
+         **/
+        editTitle = AddATask.this.findViewById(R.id.edit_myTask);
+        editDescription = AddATask.this.findViewById(R.id.edit_doSomething);
         Context context = getApplicationContext();
         CharSequence text = "Submitted!";
         int duration = Toast.LENGTH_SHORT;
@@ -43,13 +80,23 @@ public class AddATask extends AppCompatActivity {
         addTaskButton.setOnClickListener(view -> {
             toast.show();
             // save data
-            Task newTask = Task.builder()
-                    .title(editTitle.getText().toString())
-                    .body(editDescription.getText().toString()).build();
+            try {
+                Task newTask = Task.builder()
+                        .title(editTitle.getText().toString())
+                        .body(editDescription.getText().toString())
+                        .state(State.values()[selectedState])
+                        .build();
 
-            Amplify.API.mutate(ModelMutation.create(newTask),
-                    response -> Log.i("Task", "successfully added" + newTask.getTitle()),
-                    error -> Log.e("Task", error.toString()));
+                Amplify.DataStore.save(newTask,
+                        success -> Log.i("Task", "Saved item: " + success.item().getTitle()),
+                        error -> Log.e("Task", "Could not save item to DataStore", error)
+                );
+                Log.i("Task", "Initialized Amplify");
+
+            } catch (Exception e) {
+                Log.e("Task", "Could not initialize Amplify", e);
+            }
+
 
 //            database.taskDao().insertOne(newTask);
             Intent goToMainActivity = new Intent(AddATask.this, MainActivity.class);

@@ -1,11 +1,14 @@
 package com.example.taskmaster;
 
+import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
@@ -14,17 +17,21 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.amplifyframework.api.graphql.model.ModelQuery;
+import com.amplifyframework.datastore.generated.model.State;
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
-import com.example.taskmaster.adapter.DB.AppDatabase;
-import com.example.taskmaster.adapter.DB.TaskDao;
+import com.amplifyframework.AmplifyException;
+import com.amplifyframework.api.aws.AWSApiPlugin;
+import com.amplifyframework.api.graphql.model.ModelMutation;
+import com.amplifyframework.core.Amplify;
+import com.amplifyframework.datastore.AWSDataStorePlugin;
+import com.amplifyframework.datastore.generated.model.Task;
 import com.example.taskmaster.adapter.TaskAdapter;
-import com.example.taskmaster.model.State;
-import com.example.taskmaster.model.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +45,11 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private List<Task> tasks;
     private TaskAdapter adapter;
+    private Handler handler;
 
-    AppDatabase database;
-    private TaskDao taskDao;
+
+//    AppDatabase database;
+//    private TaskDao taskDao;
 
 
     @Override
@@ -50,32 +59,64 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         TextView address = findViewById(R.id.textMain_username);
         address.setText(preferences.getString("username", "Go to Settings to set your username"));
+        queryDataStore();
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*Lab32*/
+        try {
+            Amplify.addPlugin(new AWSDataStorePlugin());
+            Amplify.addPlugin(new AWSApiPlugin());
+            Amplify.configure(getApplicationContext());
+            Log.i("Task", "Initialized Amplify");
+
+
+        } catch (AmplifyException e) {
+            Log.e("Task", "Could not initialize Amplify", e);
+        }
+
         setContentView(R.layout.activity_main);
-        /*Lab29*/
-        database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "task_DB")
-                .allowMainThreadQueries()
-                .build();
-        taskDao = database.taskDao();
-
-
-        /*Lab28*/
+        tasks = new ArrayList<>();
+        tasks = queryDataStore();
 
         RecyclerView taskRecyclerView = findViewById(R.id.recyclerView_task);
-        ArrayList<Task> tasks = (ArrayList<Task>) database.taskDao().findAll();
+//        Handler handler = new Handler(Looper.getMainLooper(),
+//                message -> {
+//                    listItemDeleted();
+//                    return false;
+//                });
+//
+//        Amplify.API.query(
+//                ModelQuery.list(Task.class),
+//                response -> {
+//                    for (Task task : response.getData()) {
+//                        tasks.add(task);
+//                    }
+//                    handler.sendEmptyMessage(1);
+//                    Log.i("Amplify.queryItems", "received from Dynamo " + tasks.size());
+//                },
+//                error -> Log.i("Amplify.queryItems", "did not get items"));
 
-//        tasks = new ArrayList<>();
+
+
+        /*Lab29*/
+//        database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "task_DB")
+//                .allowMainThreadQueries()
+//                .build();
+//        taskDao = database.taskDao();
+        /*Lab28*/
+
+//        ArrayList<Task> tasks = (ArrayList<Task>) database.taskDao().findAll();
+
 //        tasks.add(new Task("First", "First body"));
 //        tasks.add(new Task("Second", "Second body"));
 //        tasks.add(new Task("Third", "Third body"));
 //        tasks.add(new Task("Done", "Trash body"));
-
 
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -84,28 +125,25 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onItemClicked(int position) {
-                if (position == 0)
-                    tasks.get(position).setState(State.NEW);
-                else if (position == 1)
-                    tasks.get(position).setState(State.ASSIGNED);
-
-                else if (position == 2)
-                    tasks.get(position).setState(State.IN_PROGRESS);
-                else
-                    tasks.get(position).setState(State.COMPLETE);
-
                 Intent goToDetailsIntent = new Intent(getApplicationContext(), TaskDetail.class);
                 preferenceEditor.putString(TASK_NAME, tasks.get(position).getTitle());
                 preferenceEditor.putString(TASK_BODY, tasks.get(position).getBody());
                 preferenceEditor.putString(TASK_STATE, tasks.get(position).getState().toString());
                 preferenceEditor.apply();
-
-
                 startActivity(goToDetailsIntent);
             }
 
             @Override
             public void onDeleteItem(int position) {
+                Amplify.API.mutate(ModelMutation.delete(tasks.get(position)),
+                        response -> Log.i(TAG, "Deleted successfully"),
+                        error -> Log.e(TAG, "Delete failed", error)
+                );
+
+                Amplify.DataStore.delete(tasks.get(position),
+                        success -> Log.i(TAG, "Deleted successfully" + success.item().toString()),
+                        failure -> Log.e(TAG, "Delete failed", failure));
+
                 tasks.remove(position);
                 Log.i(TAG, "onDeleteItem: our list =>>>> " + tasks.toString());
                 listItemDeleted();
@@ -180,6 +218,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    private void listItemDeleted() {
+        adapter.notifyDataSetChanged();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -202,7 +245,58 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void listItemDeleted() {
-        adapter.notifyDataSetChanged();
+    /**
+     * saveTaskToStoreAndApi
+     * @param title
+     * @param body
+     * @param state
+     */
+    public static void saveTasksToDataStore(String title, String body, State state) {
+        Task item = Task.builder().title(title).body(body).state(state).build();
+
+        Amplify.DataStore.save(item,
+                success -> Log.i(TAG, "Saved item: " + success.item().toString()),
+                error -> Log.e(TAG, "Could not save item to DataStore", error)
+        );
+
+//
+//        Amplify.API.mutate(ModelMutation.create(item),
+//                success -> Log.i("Tutorial", "Saved item: " + item.getTitle()),
+//                error -> Log.e("Tutorial", "Could not save item to DataStore", error));
+
+        /**
+         * goal Cache data fetched from DynamoDB into your local Room database.
+         */
+
     }
+
+    /**
+     * queryDataStore()
+     *
+     * @return List of amplifyTasks
+     */
+    public synchronized static List<Task> queryDataStore() {
+        List<Task> tasks = new ArrayList<>();
+        Amplify.DataStore.query(Task.class,
+                amplifyTasks -> {
+                    while (amplifyTasks.hasNext()) {
+                        Task oneTask = amplifyTasks.next();
+                        tasks.add(oneTask);
+
+                        Log.i("Task", "==== Task ====");
+                        Log.i("Task", "Title: " + oneTask.getTitle());
+                        if (oneTask.getBody() != null) {
+                            Log.i("Task", "Body: " + oneTask.getBody().toString());
+                        }
+                        if (oneTask.getState() != null) {
+                            Log.i("Task", "State: " + oneTask.getState().toString());
+                        }
+                        Log.i("Tutorial", "==== Task End ====");
+                    }
+                }, failure -> Log.e("Tutorial", "Could not query DataStore", failure)
+        );
+
+        return tasks;
+    }
+
 }

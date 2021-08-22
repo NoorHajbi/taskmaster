@@ -1,54 +1,31 @@
 # taskmaster
 
-# Lab: 33 - Related Data
+# Lab: 34 - Related Data
 
-Is to use AWS Amplify as a backend also. 
+Is to go through the process of publishing to the Google Play Store.
 
 ## Feature Tasks
-**Tasks Are Owned By Teams**
-- Create a second entity for a team, which has a name and a list of tasks.
-So, tasks will be Updated to be owned by a team.
-
-- Manually create three teams.
-
-## Add Task Form
-- Modify Add Task form to include either a Spinner or Radio Buttons for which team that task belongs to.
+**App Polish**
+Ensure that the task master application follows Google’s guidelines.
 
 
-## Settings Page
-- In addition to a username, allow the user to choose their team on the Settings page. 
+**Build Final APK**
+Build an APK for the task master application. Include that APK in the GitHub repo.
 
-## Testing
-Add to your Espresso tests some functionality about the new Team entity.
+## Deployment to Play Store
+`Note that becoming a developer with Google requires a one-time fee of $25. This is almost certainly worth it for the resume boost alone, but you may also partner up with a classmate to go through these steps.`
 
-## Stretch Goals
-Cache data fetched from DynamoDB into your local Room database.
-
-2 pts Team entity added with a reasonable structure
-2 pts Can add teams and can associate teams with tasks
-1 pt Show only the selected team’s tasks on homepage
+In the Google Play Console, follow the checklist for uploading your app to the Play Store. Include any notes about this process in your README, as well as the link to where your application will one day live.
 
 ## Screen Shots
-- *We can add a task.*
-![Add Task](screenshots/lab32/add_a_task.jpg)
-
-- *Home page after adding that task*
-![Home Page](screenshots/lab32/home_page_after_add.jpg)
-
-- *Detail page of that task*
-![Detail Page](screenshots/lab32/detail_page.jpg)
-
-- *Before delete that task*
-![Before Delete](screenshots/lab32/before_delete.jpg)
-
-- *After delete that task*
-![After Delete](screenshots/lab32/after_delete.jpg)
 
 
+Submit the link to that pull request on Canvas. Add a comment with the amount of time you spent on this assignment.
+Grading Rubric
+2 pts Final APK added to repo
+3 pts Notes on Play deployment in README
+1 pt README with description, screenshots, and daily change log
 
-
-## Resources
-[Amplify Getting Started](https://aws-amplify.github.io/docs/)
 
 
 ## Previous labs documentation

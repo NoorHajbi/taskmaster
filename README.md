@@ -1,31 +1,29 @@
 # taskmaster
 
-# Lab: 34 - Related Data
+# Lab: 36 - Cognito
 
-Is to go through the process of publishing to the Google Play Store.
+Is to  allow users to sign up and log in using Cognito.
 
 ## Feature Tasks
-**App Polish**
-Ensure that the task master application follows Google’s guidelines.
 
+### User Login
+Add Cognito to your Amplify setup. Add in user login and sign up flows to your application, using Cognito’s pre-built UI as appropriate. Display the logged in user’s username somewhere relevant in your app.
 
-**Build Final APK**
-Build an APK for the task master application. Include that APK in the GitHub repo.
+### User Logout
+Allow users to log out of your application.
 
-## Deployment to Play Store
-`Note that becoming a developer with Google requires a one-time fee of $25. This is almost certainly worth it for the resume boost alone, but you may also partner up with a classmate to go through these steps.`
-
-In the Google Play Console, follow the checklist for uploading your app to the Play Store. Include any notes about this process in your README, as well as the link to where your application will one day live.
 
 ## Screen Shots
 
 
-Submit the link to that pull request on Canvas. Add a comment with the amount of time you spent on this assignment.
-Grading Rubric
-2 pts Final APK added to repo
-3 pts Notes on Play deployment in README
-1 pt README with description, screenshots, and daily change log
+Stretch Goals
+Cache data fetched from DynamoDB into your local Room database.
 
+
+3 pts Cognito added with login and signup
+1 pt Display username
+1 pt Logout
+1 pt README with description, screenshots, and daily change log
 
 
 ## Previous labs documentation
@@ -39,3 +37,4 @@ Grading Rubric
 |Lab: 31|[Espresso and Polish](labs/LAB31.md)|
 |Lab: 32|[Integrating AWS for Cloud Data Storage](labs/LAB32.md)|
 |Lab: 33|[Related Data](labs/LAB33.md)|
+|Lab: 34|[Play Store](labs/LAB34.md)|

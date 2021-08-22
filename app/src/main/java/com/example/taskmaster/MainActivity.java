@@ -247,7 +247,6 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * saveTaskToStoreAndApi
-     *
      * @param title
      * @param body
      * @param state
@@ -266,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
 //                error -> Log.e("Tutorial", "Could not save item to DataStore", error));
 
         /**
-         * goal clear cache
+         * goal Cache data fetched from DynamoDB into your local Room database.
          */
 
     }

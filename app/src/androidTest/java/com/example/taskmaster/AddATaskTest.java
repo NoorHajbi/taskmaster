@@ -14,6 +14,7 @@ import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 
@@ -38,6 +39,9 @@ public class AddATaskTest {
         onView(withId(R.id.edit_myTask)).perform(typeText("Hello"), closeSoftKeyboard());
         onView(withId(R.id.edit_doSomething)).check(matches(withText("Do Something")));
     }
-
-
+    @Test
+    public void testSpinner(){
+        onView(withId(R.id.spinner)).perform(click());
+        onView(withId(R.id.spinner)).check(matches(withSpinnerText("new")));
+    }
 }

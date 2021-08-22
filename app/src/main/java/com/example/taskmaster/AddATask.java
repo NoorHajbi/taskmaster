@@ -17,11 +17,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.State;
 import com.amplifyframework.datastore.generated.model.Task;
-import com.example.taskmaster.DB.AppDatabase;
 
 public class AddATask extends AppCompatActivity {
     //    AppDatabase database;

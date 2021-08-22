@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
@@ -17,7 +16,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.datastore.generated.model.State;
 
 import androidx.annotation.RequiresApi;
@@ -31,6 +29,7 @@ import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.AWSDataStorePlugin;
 import com.amplifyframework.datastore.generated.model.Task;
+import com.amplifyframework.datastore.generated.model.Team;
 import com.example.taskmaster.adapter.TaskAdapter;
 
 import java.util.ArrayList;
@@ -46,19 +45,23 @@ public class MainActivity extends AppCompatActivity {
     private List<Task> tasks;
     private TaskAdapter adapter;
     private Handler handler;
+    private List<Team> teams;
 
 
 //    AppDatabase database;
 //    private TaskDao taskDao;
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onResume() { // this is probably the correct place for ALL rendered info
 
         super.onResume();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        TextView address = findViewById(R.id.textMain_username);
-        address.setText(preferences.getString("username", "Go to Settings to set your username"));
+        TextView teamName = findViewById(R.id.textMain_teamName);
+        teamName.setText(preferences.getString("selectedTeam", "Go to Settings to set your team name"));
+
+        buildTeams();
         queryDataStore();
     }
 
@@ -74,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             Amplify.addPlugin(new AWSApiPlugin());
             Amplify.configure(getApplicationContext());
             Log.i("Task", "Initialized Amplify");
-
+            buildTeams();
 
         } catch (AmplifyException e) {
             Log.e("Task", "Could not initialize Amplify", e);
@@ -85,24 +88,6 @@ public class MainActivity extends AppCompatActivity {
         tasks = queryDataStore();
 
         RecyclerView taskRecyclerView = findViewById(R.id.recyclerView_task);
-//        Handler handler = new Handler(Looper.getMainLooper(),
-//                message -> {
-//                    listItemDeleted();
-//                    return false;
-//                });
-//
-//        Amplify.API.query(
-//                ModelQuery.list(Task.class),
-//                response -> {
-//                    for (Task task : response.getData()) {
-//                        tasks.add(task);
-//                    }
-//                    handler.sendEmptyMessage(1);
-//                    Log.i("Amplify.queryItems", "received from Dynamo " + tasks.size());
-//                },
-//                error -> Log.i("Amplify.queryItems", "did not get items"));
-
-
 
         /*Lab29*/
 //        database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "task_DB")
@@ -247,6 +232,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * saveTaskToStoreAndApi
+     *
      * @param title
      * @param body
      * @param state
@@ -275,18 +261,27 @@ public class MainActivity extends AppCompatActivity {
      *
      * @return List of amplifyTasks
      */
-    public synchronized static List<Task> queryDataStore() {
+    public synchronized List<Task> queryDataStore() {
         List<Task> tasks = new ArrayList<>();
-        Amplify.DataStore.query(Task.class,
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        Amplify.DataStore.query(Task.class
+                ,
                 amplifyTasks -> {
+                    tasks.clear();
                     while (amplifyTasks.hasNext()) {
                         Task oneTask = amplifyTasks.next();
+//                        if (preferences.contains("selectedTeam")) {
+//                            if (oneTask.getTeam().getName().equals(preferences.getString("selectedTeam", " "))) {
+//                                tasks.add(oneTask);
+//                            }
+//                        } else {
                         tasks.add(oneTask);
-
+//                        }
+//                        }
                         Log.i("Task", "==== Task ====");
                         Log.i("Task", "Title: " + oneTask.getTitle());
                         if (oneTask.getBody() != null) {
-                            Log.i("Task", "Body: " + oneTask.getBody().toString());
+                            Log.i("Task", "Body: " + oneTask.getBody());
                         }
                         if (oneTask.getState() != null) {
                             Log.i("Task", "State: " + oneTask.getState().toString());
@@ -297,6 +292,37 @@ public class MainActivity extends AppCompatActivity {
         );
 
         return tasks;
+    }
+
+    //lab33
+    public void buildTeams() {
+        Team team1 = Team.builder()
+                .name("team1")
+                .build();
+
+        Team team2 = Team.builder()
+                .name("team2")
+                .build();
+
+        Team team3 = Team.builder()
+                .name("team3")
+                .build();
+
+        Amplify.API.mutate(ModelMutation.create(team1),
+                response -> Log.i("team", "added"),
+                error -> Log.e("team", "failed")
+        );
+
+        Amplify.API.mutate(ModelMutation.create(team2),
+                response -> Log.i("team", "added"),
+                error -> Log.e("team", "failed")
+        );
+
+        Amplify.API.mutate(ModelMutation.create(team3),
+                response -> Log.i("team", "added"),
+                error -> Log.e("team", "failed")
+        );
+
     }
 
 }

@@ -3,11 +3,16 @@ package com.example.taskmaster;
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
@@ -16,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.datastore.generated.model.State;
 
 import androidx.annotation.RequiresApi;
@@ -35,6 +41,8 @@ import com.example.taskmaster.adapter.TaskAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.annotations.NonNull;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String TASK_NAME = "task_name";
@@ -51,7 +59,12 @@ public class MainActivity extends AppCompatActivity {
 //    AppDatabase database;
 //    private TaskDao taskDao;
 
+    /**
+     * onResume() will always be called when the activity goes into foreground,
+     * but it will never be executed before onCreate() .
+     */
 
+//
     @SuppressLint("SetTextI18n")
     @Override
     public void onResume() { // this is probably the correct place for ALL rendered info
@@ -60,8 +73,6 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         TextView teamName = findViewById(R.id.textMain_teamName);
         teamName.setText(preferences.getString("selectedTeam", "Go to Settings to set your team name"));
-
-        buildTeams();
         queryDataStore();
     }
 
@@ -85,7 +96,24 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         tasks = new ArrayList<>();
-        tasks = queryDataStore();
+
+        handler = new Handler(Looper.getMainLooper(),
+                new Handler.Callback() {
+                    @Override
+                    public boolean handleMessage(@NonNull Message message) {
+                        listItemDeleted();
+                        return false;
+                    }
+                });
+
+        if (isNetworkAvailable(getApplicationContext())) {
+            tasks =getDataAPI();
+            Log.i(TAG, "NET: the network is available");
+        } else {
+            tasks = queryDataStore();
+            Log.i(TAG, "NET: net down");
+        }
+
 
         RecyclerView taskRecyclerView = findViewById(R.id.recyclerView_task);
 
@@ -256,6 +284,21 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    public  synchronized List<Task> getDataAPI()  {
+        Log.i(TAG, "");
+        Amplify.API.query(ModelQuery.list(Task.class),
+                response -> {
+                    for (Task task : response.getData()) {
+                        tasks.add(task);
+                        Log.i(TAG, " => " + task);
+                    }
+                    handler.sendEmptyMessage(1);
+                },
+                error -> Log.e(TAG, " => " + error.toString())
+        );
+        return tasks;
+    }
     /**
      * queryDataStore()
      *
@@ -325,4 +368,21 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public static boolean isNetworkAvailable(Context context) {
+        try {/*from  w w w  .  ja  v a2  s .co  m*/
+            ConnectivityManager connectivity = (ConnectivityManager) context
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (connectivity != null) {
+                NetworkInfo info = connectivity.getActiveNetworkInfo();
+                if (info != null && info.isConnected()) {
+                    if (info.getState() == NetworkInfo.State.CONNECTED) {
+                        return true;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return false;
+    }
 }

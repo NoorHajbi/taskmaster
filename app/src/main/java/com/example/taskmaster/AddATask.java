@@ -67,20 +67,20 @@ public class AddATask extends AppCompatActivity {
                 }, failure -> Log.e("Tutorial", "Could not query DataStore", failure)
         );
 
-//        Amplify.API.query(
-//                ModelQuery.list(Team.class),
-//                response -> {
-//                    for (Team team : response.getData()) {
-//                        teams.add(team);
-//                    }
-//                    team1.setText(teams.get(0).getName());
-//                    team2.setText(teams.get(1).getName());
-//                    team3.setText(teams.get(2).getName());
-//
-//                    Log.i("Team", "success");
-//                },
-//                error -> Log.e("Team", "failed to retrieve data")
-//        );
+        Amplify.API.query(
+                ModelQuery.list(Team.class),
+                response -> {
+                    for (Team team : response.getData()) {
+                        teams.add(team);
+                    }
+                    team1.setText(teams.get(0).getName());
+                    team2.setText(teams.get(1).getName());
+                    team3.setText(teams.get(2).getName());
+
+                    Log.i("Team", "success");
+                },
+                error -> Log.e("Team", "failed to retrieve data")
+        );
 
 
 //        database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "task_DB")

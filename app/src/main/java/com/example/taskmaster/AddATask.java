@@ -9,8 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -45,6 +47,9 @@ public class AddATask extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences preferences =
+                PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor preferenceEditor = preferences.edit();
         setContentView(R.layout.activity_add_atask);
         teams = new ArrayList<>();
         team1 = this.findViewById(R.id.radioButton_team1);
@@ -58,9 +63,11 @@ public class AddATask extends AppCompatActivity {
                         for (Team team : response.getData()) {
                             teams.add(team);
                         }
-                        team1.setText(teams.get(0).getName());
-                        team2.setText(teams.get(1).getName());
-                        team3.setText(teams.get(2).getName());
+                        System.out.println("ddddddddddddddddddddddddddddddddddddddddddddddddddddddd" + teams.get(0).getName());
+
+//                    team1.setText(teams.get(0).getName());
+//                    team2.setText(teams.get(1).getName());
+//                    team3.setText(teams.get(2).getName());
 
                         Log.i("Team", "success");
                     },
@@ -80,10 +87,14 @@ public class AddATask extends AppCompatActivity {
                                 Log.i("Team", "Tasks: " + team.getTasks().toString());
                             }
                             Log.i("Team", "==== Team End ====");
+                            preferenceEditor.putString("selectedTeamName", team.getName());
+                            preferenceEditor.apply();
                         }
-                        team1.setText(teams.get(0).getName());
-                        team2.setText(teams.get(1).getName());
-                        team3.setText(teams.get(2).getName());
+//                    team1.setText(teams.get(0).getName());
+                        System.out.println("ddddddddddddddddddddddddddddddddddddddddddddddddddddddd" + teams.get(0).getName());
+//                    team2.setText(teams.get(1).getName());
+//                    team3.setText(teams.get(2).getName());
+
                     }, failure -> Log.e("Tutorial", "Could not query DataStore", failure)
             );
             Log.i(TAG, "NET: net down");

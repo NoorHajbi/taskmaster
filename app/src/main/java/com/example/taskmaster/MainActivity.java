@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.amplifyframework.api.graphql.model.ModelQuery;
@@ -43,12 +44,14 @@ public class MainActivity extends AppCompatActivity {
     public static final String TASK_NAME = "task_name";
     public static final String TASK_BODY = "task_body";
     public static final String TASK_STATE = "task_state";
-
+    RadioButton team1, team2, team3;
     private static final String TAG = "MainActivity";
     private List<Task> tasks;
     private TaskAdapter adapter;
     private Handler handler;
     private List<Team> teams;
+    private String selectedTeam;
+    private String myTeam;
 
 
 //    AppDatabase database;
@@ -62,16 +65,19 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         TextView teamName = findViewById(R.id.textMain_teamName);
-        teamName.setText(preferences.getString("selectedTeam", "Go to Settings to set your team name"));
+        selectedTeam = preferences.getString("selectedTeam", "Go to Settings to set your team name");
+        teamName.setText(selectedTeam);
+        myTeam = preferences.getString("selectedTeamName", "team1");
 
-//        buildTeams();
-        if (isNetworkAvailable(getApplicationContext())) {
-            queryAPITasks();
-            Log.i(TAG, "NET: the network is available");
-        } else {
-            queryDataStore();
-            Log.i(TAG, "NET: net down");
-        }
+
+//        if (isNetworkAvailable(getApplicationContext())) {
+//            queryAPITasks();
+//            Log.i(TAG, "NET: the network is available");
+//        } else {
+        queryDataStore();
+//            Log.i(TAG, "NET: net down");
+//        }
+
     }
 
 
@@ -80,13 +86,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        team1 = this.findViewById(R.id.radioButton_team1);
+        team2 = this.findViewById(R.id.radioButton_team2);
+        team3 = this.findViewById(R.id.radioButton_team3);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        selectedTeam = preferences.getString("selectedTeam", "Go to Settings to set your team name");
+        myTeam = preferences.getString("selectedTeamName", "team1");
+
+
         /*Lab32*/
         try {
             Amplify.addPlugin(new AWSDataStorePlugin());
             Amplify.addPlugin(new AWSApiPlugin());
             Amplify.configure(getApplicationContext());
             Log.i("Task", "Initialized Amplify");
-            buildTeams();
+//            buildTeams();  //they are already POSTed
 
         } catch (AmplifyException e) {
             Log.e("Task", "Could not initialize Amplify", e);
@@ -95,13 +110,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         tasks = new ArrayList<>();
 
-        if (isNetworkAvailable(getApplicationContext())) {
-            tasks = queryAPITasks();
-            Log.i(TAG, "NET: the network is available");
-        } else {
-            tasks = queryDataStore();
-            Log.i(TAG, "NET: net down");
-        }
+//        if (isNetworkAvailable(getApplicationContext())) {
+//            tasks = queryAPITasks();
+//            Log.i(TAG, "NET: the network is available");
+//        } else {
+        tasks = queryDataStore();
+//            Log.i(TAG, "NET: net down");
+//        }
 
 
         RecyclerView taskRecyclerView = findViewById(R.id.recyclerView_task);
@@ -121,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
 //        tasks.add(new Task("Done", "Trash body"));
 
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor preferenceEditor = preferences.edit();
         adapter = new TaskAdapter(tasks, new TaskAdapter.OnTaskItemClickListener() {
 
@@ -267,10 +281,6 @@ public class MainActivity extends AppCompatActivity {
 //                success -> Log.i("Tutorial", "Saved item: " + item.getTitle()),
 //                error -> Log.e("Tutorial", "Could not save item to DataStore", error));
 
-        /**
-         * goal Cache data fetched from DynamoDB into your local Room database.
-         */
-
     }
 
     public boolean isNetworkAvailable(Context context) {
@@ -289,7 +299,7 @@ public class MainActivity extends AppCompatActivity {
                     tasks.clear();
                     for (Task task : response.getData()) {
                         if (preferences.contains("selectedTeam")) {
-                            if (task.getTeam().getName().equals(preferences.getString("selectedTeam", "Go to Settings to set your team name"))) {
+                            if (task.getTeam().getName().equals(selectedTeam)) {
                                 tasks.add(task);
                             }
                         } else {
@@ -311,21 +321,22 @@ public class MainActivity extends AppCompatActivity {
      * @return List of amplifyTasks
      */
     public synchronized List<Task> queryDataStore() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         List<Task> tasks = new ArrayList<>();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
         Amplify.DataStore.query(Task.class
                 ,
                 amplifyTasks -> {
                     tasks.clear();
                     while (amplifyTasks.hasNext()) {
                         Task oneTask = amplifyTasks.next();
-//                        if (preferences.contains("selectedTeam")) {
-//                            if (oneTask.getTeam().getName().equals(preferences.getString("selectedTeam", "Go to Settings to set your team name"))) {
-//                                tasks.add(oneTask);
-//                            }
-//                        } else {
-                        tasks.add(oneTask);
-//                        }
+                        if (preferences.contains("selectedTeam")) {
+                            if (myTeam.equals(selectedTeam)) {
+                                tasks.add(oneTask);
+                            }
+                        } else { tasks.add(oneTask); }
+                        System.out.println("tttteeeeeeeeeeeeeeeeeeeeeaaaaaaaaaaaaaaaaaaaaaaaaaaam"+oneTask.getTeam().getName());
+
                         Log.i("Task", "==== Task ====");
                         Log.i("Task", "Title: " + oneTask.getTitle());
                         if (oneTask.getBody() != null) {

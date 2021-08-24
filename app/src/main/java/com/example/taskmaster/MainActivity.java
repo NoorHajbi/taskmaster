@@ -3,8 +3,10 @@ package com.example.taskmaster;
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.datastore.generated.model.State;
 
 import androidx.annotation.RequiresApi;
@@ -61,8 +64,14 @@ public class MainActivity extends AppCompatActivity {
         TextView teamName = findViewById(R.id.textMain_teamName);
         teamName.setText(preferences.getString("selectedTeam", "Go to Settings to set your team name"));
 
-        buildTeams();
-        queryDataStore();
+//        buildTeams();
+        if (isNetworkAvailable(getApplicationContext())) {
+            queryAPITasks();
+            Log.i(TAG, "NET: the network is available");
+        } else {
+            queryDataStore();
+            Log.i(TAG, "NET: net down");
+        }
     }
 
 
@@ -85,7 +94,15 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         tasks = new ArrayList<>();
-        tasks = queryDataStore();
+
+        if (isNetworkAvailable(getApplicationContext())) {
+            tasks = queryAPITasks();
+            Log.i(TAG, "NET: the network is available");
+        } else {
+            tasks = queryDataStore();
+            Log.i(TAG, "NET: net down");
+        }
+
 
         RecyclerView taskRecyclerView = findViewById(R.id.recyclerView_task);
 
@@ -256,6 +273,38 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager =
+                ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager
+                .getActiveNetworkInfo().isConnected();
+    }
+
+    public synchronized List<Task> queryAPITasks() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+
+        Amplify.API.query(
+                ModelQuery.list(Task.class),
+                response -> {
+                    tasks.clear();
+                    for (Task task : response.getData()) {
+                        if (preferences.contains("selectedTeam")) {
+                            if (task.getTeam().getName().equals(preferences.getString("selectedTeam", "Go to Settings to set your team name"))) {
+                                tasks.add(task);
+                            }
+                        } else {
+                            tasks.add(task);
+                        }
+                    }
+                    handler.sendEmptyMessage(1);
+                    Log.i("amplify.queryItems", "Got this many: " + tasks.size());
+                },
+                error -> Log.i("Amplify.queryItems", "Did not receive tasks")
+        );
+        return tasks;
+    }
+
+
     /**
      * queryDataStore()
      *
@@ -271,12 +320,11 @@ public class MainActivity extends AppCompatActivity {
                     while (amplifyTasks.hasNext()) {
                         Task oneTask = amplifyTasks.next();
 //                        if (preferences.contains("selectedTeam")) {
-//                            if (oneTask.getTeam().getName().equals(preferences.getString("selectedTeam", " "))) {
+//                            if (oneTask.getTeam().getName().equals(preferences.getString("selectedTeam", "Go to Settings to set your team name"))) {
 //                                tasks.add(oneTask);
 //                            }
 //                        } else {
                         tasks.add(oneTask);
-//                        }
 //                        }
                         Log.i("Task", "==== Task ====");
                         Log.i("Task", "Title: " + oneTask.getTitle());

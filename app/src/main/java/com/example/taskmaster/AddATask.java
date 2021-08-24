@@ -1,5 +1,7 @@
 package com.example.taskmaster;
 
+import static android.content.ContentValues.TAG;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 
@@ -7,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -48,39 +51,43 @@ public class AddATask extends AppCompatActivity {
         team2 = this.findViewById(R.id.radioButton_team2);
         team3 = this.findViewById(R.id.radioButton_team3);
 
-        Amplify.DataStore.query(Team.class
-                ,
-                amplifyTeam -> {
-                    while (amplifyTeam.hasNext()) {
-                        Team team = amplifyTeam.next();
-                        teams.add(team);
-                        Log.i("Team", "==== Team ====");
-                        Log.i("Team", "Name: " + team.getName());
-                        if (team.getTasks() != null) {
-                            Log.i("Team", "Tasks: " + team.getTasks().toString());
+        if (isNetworkAvailable(getApplicationContext())) {
+            Amplify.API.query(
+                    ModelQuery.list(Team.class),
+                    response -> {
+                        for (Team team : response.getData()) {
+                            teams.add(team);
                         }
-                        Log.i("Team", "==== Team End ====");
-                    }
-                    team1.setText(teams.get(0).getName());
-                    team2.setText(teams.get(1).getName());
-                    team3.setText(teams.get(2).getName());
-                }, failure -> Log.e("Tutorial", "Could not query DataStore", failure)
-        );
+                        team1.setText(teams.get(0).getName());
+                        team2.setText(teams.get(1).getName());
+                        team3.setText(teams.get(2).getName());
 
-//        Amplify.API.query(
-//                ModelQuery.list(Team.class),
-//                response -> {
-//                    for (Team team : response.getData()) {
-//                        teams.add(team);
-//                    }
-//                    team1.setText(teams.get(0).getName());
-//                    team2.setText(teams.get(1).getName());
-//                    team3.setText(teams.get(2).getName());
-//
-//                    Log.i("Team", "success");
-//                },
-//                error -> Log.e("Team", "failed to retrieve data")
-//        );
+                        Log.i("Team", "success");
+                    },
+                    error -> Log.e("Team", "failed to retrieve data")
+            );
+            Log.i(TAG, "NET: the network is available");
+        } else {
+            Amplify.DataStore.query(Team.class
+                    ,
+                    amplifyTeam -> {
+                        while (amplifyTeam.hasNext()) {
+                            Team team = amplifyTeam.next();
+                            teams.add(team);
+                            Log.i("Team", "==== Team ====");
+                            Log.i("Team", "Name: " + team.getName());
+                            if (team.getTasks() != null) {
+                                Log.i("Team", "Tasks: " + team.getTasks().toString());
+                            }
+                            Log.i("Team", "==== Team End ====");
+                        }
+                        team1.setText(teams.get(0).getName());
+                        team2.setText(teams.get(1).getName());
+                        team3.setText(teams.get(2).getName());
+                    }, failure -> Log.e("Tutorial", "Could not query DataStore", failure)
+            );
+            Log.i(TAG, "NET: net down");
+        }
 
 
 //        database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "task_DB")
@@ -128,9 +135,9 @@ public class AddATask extends AppCompatActivity {
             toast.show();
             // save data
             try {
-
                 RadioGroup radioGroup = AddATask.this.findViewById(R.id.radioGroup);
                 RadioButton selectedTeam = AddATask.this.findViewById(radioGroup.getCheckedRadioButtonId());
+
                 String teamName = selectedTeam.getText().toString();
                 Team myTeam = null;
                 //for finding the team
@@ -146,6 +153,7 @@ public class AddATask extends AppCompatActivity {
                         .state(State.values()[selectedState]).team(myTeam)
                         .build();
 
+                //Save Task to DataStore and API
                 Amplify.DataStore.save(newTask,
                         success -> Log.i("Task", "Saved item: " + success.item().getTitle()),
                         error -> Log.e("Task", "Could not save item to DataStore", error)
@@ -185,6 +193,14 @@ public class AddATask extends AppCompatActivity {
                 break;
         }
     }
+
+    public boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager =
+                ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager
+                .getActiveNetworkInfo().isConnected();
+    }
+
 
 }
 

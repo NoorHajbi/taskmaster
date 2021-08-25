@@ -1,7 +1,6 @@
 # taskmaster
 
 # Lab: 33 - Related Data
-
 Is to use AWS Amplify as a backend also. 
 
 ## Feature Tasks
@@ -24,31 +23,17 @@ Add to your Espresso tests some functionality about the new Team entity.
 ## Stretch Goals
 Cache data fetched from DynamoDB into your local Room database.
 
-2 pts Team entity added with a reasonable structure
-2 pts Can add teams and can associate teams with tasks
-1 pt Show only the selected team’s tasks on homepage
-
 ## Screen Shots
+
+- *Settings page for adding a username and selecting a team name.*
+![Settings Page](screenshots/lab33/settings.jpg)
+
 - *We can add a task.*
-![Add Task](screenshots/lab32/add_a_task.jpg)
+![Add Task](screenshots/lab33/add_a_task.jpg)
 
 - *Home page after adding that task*
-![Home Page](screenshots/lab32/home_page_after_add.jpg)
+![Home Page](screenshots/lab33/home_page.jpg)
 
-- *Detail page of that task*
-![Detail Page](screenshots/lab32/detail_page.jpg)
-
-- *Before delete that task*
-![Before Delete](screenshots/lab32/before_delete.jpg)
-
-- *After delete that task*
-![After Delete](screenshots/lab32/after_delete.jpg)
-
-
-
-
-## Resources
-[Amplify Getting Started](https://aws-amplify.github.io/docs/)
 
 
 ## Previous labs documentation

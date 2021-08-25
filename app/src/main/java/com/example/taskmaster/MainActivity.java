@@ -10,14 +10,12 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.amplifyframework.api.graphql.model.ModelQuery;
@@ -39,7 +37,6 @@ import com.example.taskmaster.adapter.TaskAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private Handler handler;
     private List<Team> teams;
     private String selectedTeam;
+    private SharedPreferences preferences;
 
 //    AppDatabase database;
 //    private TaskDao taskDao;
@@ -62,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() { // this is probably the correct place for ALL rendered info
 
         super.onResume();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         TextView teamName = findViewById(R.id.textMain_teamName);
         selectedTeam = preferences.getString("selectedTeam", "Go to Settings to set your team name");
         teamName.setText(selectedTeam);
@@ -85,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         selectedTeam = preferences.getString("selectedTeam", " ");
         //        myTeam = preferences.getString("selectedTeamName", "team1");
 
@@ -203,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
         notificationManager.createNotificationChannel(channel);
 
 
-//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        preferences = PreferenceManager.getDefaultSharedPreferences(this);
 //        SharedPreferences.Editor preferenceEditor = preferences.edit();
 //
 //        Button selectFirstTask = MainActivity.this.findViewById(R.id.button_firstTask);
@@ -292,7 +290,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public synchronized List<Task> queryAPITasks() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 
         Amplify.API.query(
                 ModelQuery.list(Task.class),
@@ -322,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
      * @return List of amplifyTasks
      */
     public synchronized List<Task> queryDataStore() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         List<Task> tasks = new ArrayList<>();
         Amplify.DataStore.query(Task.class
@@ -331,13 +329,13 @@ public class MainActivity extends AppCompatActivity {
 //                    tasks.clear();
                     while (amplifyTasks.hasNext()) {
                         Task oneTask = amplifyTasks.next();
-//                        if (preferences.contains("selectedTeam")) {
+                        if (preferences.contains("selectedTeam")) {
 //                            if (oneTask.getTeam().getName().equals(selectedTeam)) {
 //                                tasks.add(oneTask);
 //                            }
 //                        } else {
                             tasks.add(oneTask);
-//                        }
+                        }
                         System.out.println("tttteeeeeeeeeeeeeeeeeeeeeaaaaaaaaaaaaaaaaaaaaaaaaaaam" + oneTask.getTeam().getName());
 
                         Log.i("Task", "==== Task ====");
@@ -347,6 +345,9 @@ public class MainActivity extends AppCompatActivity {
                         }
                         if (oneTask.getState() != null) {
                             Log.i("Task", "State: " + oneTask.getState().toString());
+                        }
+                        if (oneTask.getTeam().getName() != null) {
+                            Log.i("Task", "State: " + oneTask.getTeam().getName().toString());
                         }
                         Log.i("Tutorial", "==== Task End ====");
                     }

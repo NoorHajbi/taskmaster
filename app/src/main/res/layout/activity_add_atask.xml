@@ -116,6 +116,7 @@
             android:id="@+id/radioButton_team3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="team3"
 
             />
     </RadioGroup>

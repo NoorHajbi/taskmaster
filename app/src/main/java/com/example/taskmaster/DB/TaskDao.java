@@ -6,7 +6,8 @@ import androidx.room.Insert;
 import androidx.room.Query;
 
 
-import com.example.taskmaster.model.ApplicationTask;
+import com.amplifyframework.datastore.generated.model.Task;
+//import com.example.taskmaster.model.ApplicationTask;
 
 import java.util.List;
 
@@ -14,25 +15,25 @@ import java.util.List;
 public interface TaskDao {
 
     @Insert
-    void insertOne(ApplicationTask task);
+    void insertOne(Task task);
 
-    @Query("SELECT * FROM ApplicationTask WHERE task_title LIKE :title")
-    ApplicationTask findByTitle(String title);
-
-
-    @Query("SELECT * FROM ApplicationTask ORDER BY id") //ASC OR DESC
-    public List<ApplicationTask> getAllTasks();
+//    @Query("SELECT * FROM ApplicationTask WHERE task_title LIKE :title")
+//    ApplicationTask findByTitle(String title);
 
 
-    @Query("SELECT * FROM ApplicationTask")
-    List<ApplicationTask> findAll();
+//    @Query("SELECT * FROM Task ORDER BY id") //ASC OR DESC
+//    public List<Task> getAllTasks();
 
 
-    @Delete
-    void deleteItem(ApplicationTask task);
-
-
-    @Query("DELETE FROM ApplicationTask")
-    void delteteSafe();
+//    @Query("SELECT * FROM ApplicationTask")
+//    List<ApplicationTask> findAll();
+//
+//
+//    @Delete
+//    void deleteItem(ApplicationTask task);
+//
+//
+//    @Query("DELETE FROM ApplicationTask")
+//    void delteteSafe();
 
 }

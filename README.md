@@ -19,6 +19,8 @@ In the Google Play Console, follow the checklist for uploading your app to the P
 
 ## Screen Shots
 
+- *We can add a task.*
+![Add Task](screenshots/lab33/add_a_task.jpg)
 
 Submit the link to that pull request on Canvas. Add a comment with the amount of time you spent on this assignment.
 Grading Rubric

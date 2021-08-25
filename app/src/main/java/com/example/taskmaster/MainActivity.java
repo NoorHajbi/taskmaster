@@ -10,6 +10,7 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
@@ -38,21 +39,19 @@ import com.example.taskmaster.adapter.TaskAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String TASK_NAME = "task_name";
     public static final String TASK_BODY = "task_body";
     public static final String TASK_STATE = "task_state";
-    RadioButton team1, team2, team3;
     private static final String TAG = "MainActivity";
     private List<Task> tasks;
     private TaskAdapter adapter;
     private Handler handler;
     private List<Team> teams;
     private String selectedTeam;
-    private String myTeam;
-
 
 //    AppDatabase database;
 //    private TaskDao taskDao;
@@ -67,14 +66,14 @@ public class MainActivity extends AppCompatActivity {
         TextView teamName = findViewById(R.id.textMain_teamName);
         selectedTeam = preferences.getString("selectedTeam", "Go to Settings to set your team name");
         teamName.setText(selectedTeam);
-        myTeam = preferences.getString("selectedTeamName", "team1");
+//        myTeam = preferences.getString("selectedTeamName", "team1");
 
 
 //        if (isNetworkAvailable(getApplicationContext())) {
 //            queryAPITasks();
 //            Log.i(TAG, "NET: the network is available");
 //        } else {
-        queryDataStore();
+        tasks = queryDataStore();
 //            Log.i(TAG, "NET: net down");
 //        }
 
@@ -86,13 +85,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        team1 = this.findViewById(R.id.radioButton_team1);
-        team2 = this.findViewById(R.id.radioButton_team2);
-        team3 = this.findViewById(R.id.radioButton_team3);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        selectedTeam = preferences.getString("selectedTeam", "Go to Settings to set your team name");
-        myTeam = preferences.getString("selectedTeamName", "team1");
+        selectedTeam = preferences.getString("selectedTeam", " ");
+        //        myTeam = preferences.getString("selectedTeamName", "team1");
 
 
         /*Lab32*/
@@ -109,7 +104,14 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         tasks = new ArrayList<>();
+        RecyclerView taskRecyclerView = findViewById(R.id.recyclerView_task);
 
+
+//        handler = new Handler(Looper.getMainLooper(),
+//                msg -> {
+//                    Objects.requireNonNull(taskRecyclerView.getAdapter()).notifyDataSetChanged();
+//                    return false;
+//                });
 //        if (isNetworkAvailable(getApplicationContext())) {
 //            tasks = queryAPITasks();
 //            Log.i(TAG, "NET: the network is available");
@@ -119,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
 
-        RecyclerView taskRecyclerView = findViewById(R.id.recyclerView_task);
 
         /*Lab29*/
 //        database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "task_DB")
@@ -327,15 +328,17 @@ public class MainActivity extends AppCompatActivity {
         Amplify.DataStore.query(Task.class
                 ,
                 amplifyTasks -> {
-                    tasks.clear();
+//                    tasks.clear();
                     while (amplifyTasks.hasNext()) {
                         Task oneTask = amplifyTasks.next();
-                        if (preferences.contains("selectedTeam")) {
-                            if (myTeam.equals(selectedTeam)) {
-                                tasks.add(oneTask);
-                            }
-                        } else { tasks.add(oneTask); }
-                        System.out.println("tttteeeeeeeeeeeeeeeeeeeeeaaaaaaaaaaaaaaaaaaaaaaaaaaam"+oneTask.getTeam().getName());
+//                        if (preferences.contains("selectedTeam")) {
+//                            if (oneTask.getTeam().getName().equals(selectedTeam)) {
+//                                tasks.add(oneTask);
+//                            }
+//                        } else {
+                            tasks.add(oneTask);
+//                        }
+                        System.out.println("tttteeeeeeeeeeeeeeeeeeeeeaaaaaaaaaaaaaaaaaaaaaaaaaaam" + oneTask.getTeam().getName());
 
                         Log.i("Task", "==== Task ====");
                         Log.i("Task", "Title: " + oneTask.getTitle());

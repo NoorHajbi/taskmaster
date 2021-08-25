@@ -49,7 +49,7 @@ public class AddATask extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         SharedPreferences preferences =
                 PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor preferenceEditor = preferences.edit();
+        @SuppressLint("CommitPrefEdits") SharedPreferences.Editor preferenceEditor = preferences.edit();
         setContentView(R.layout.activity_add_atask);
         teams = new ArrayList<>();
         team1 = this.findViewById(R.id.radioButton_team1);
@@ -64,11 +64,6 @@ public class AddATask extends AppCompatActivity {
                             teams.add(team);
                         }
                         System.out.println("ddddddddddddddddddddddddddddddddddddddddddddddddddddddd" + teams.get(0).getName());
-
-//                    team1.setText(teams.get(0).getName());
-//                    team2.setText(teams.get(1).getName());
-//                    team3.setText(teams.get(2).getName());
-
                         Log.i("Team", "success");
                     },
                     error -> Log.e("Team", "failed to retrieve data")
@@ -87,13 +82,10 @@ public class AddATask extends AppCompatActivity {
                                 Log.i("Team", "Tasks: " + team.getTasks().toString());
                             }
                             Log.i("Team", "==== Team End ====");
+
                             preferenceEditor.putString("selectedTeamName", team.getName());
                             preferenceEditor.apply();
                         }
-//                    team1.setText(teams.get(0).getName());
-                        System.out.println("ddddddddddddddddddddddddddddddddddddddddddddddddddddddd" + teams.get(0).getName());
-//                    team2.setText(teams.get(1).getName());
-//                    team3.setText(teams.get(2).getName());
 
                     }, failure -> Log.e("Tutorial", "Could not query DataStore", failure)
             );
@@ -161,10 +153,11 @@ public class AddATask extends AppCompatActivity {
                 Task newTask = Task.builder()
                         .title(editTitle.getText().toString())
                         .body(editDescription.getText().toString())
-                        .state(State.values()[selectedState]).team(myTeam)
+                        .state(State.values()[selectedState])
+                        .team(myTeam)
                         .build();
 
-                //Save Task to DataStore and API
+                //send Task to DataStore and API
                 Amplify.DataStore.save(newTask,
                         success -> Log.i("Task", "Saved item: " + success.item().getTitle()),
                         error -> Log.e("Task", "Could not save item to DataStore", error)

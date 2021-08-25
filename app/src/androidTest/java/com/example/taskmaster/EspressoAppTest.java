@@ -67,7 +67,9 @@ public class EspressoAppTest {
         onView(withId(R.id.buttonMain_settings)).perform(click());
         onView(withId(R.id.edit_username)).perform(typeText("Noor"));
         onView(withId(R.id.saveButton)).perform(click());
-        onView(withId(R.id.textMain_username)).check(matches(withText("Noor")));
+//        onView(withId(R.id.textMain_username)).check(matches(withText("Noor")));
+        onView(withId(R.id.textMain_teamName)).check(matches(withText("Noor's Team")));
+
     }
 
 

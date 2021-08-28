@@ -3,17 +3,21 @@
 Is to go through the process of publishing to the Google Play Store.
 
 ## Feature Tasks
-**App Polish**
+- **App Polish**
 Ensure that the task master application follows Google’s guidelines.
 
 `I added unique Id for my app`
 ` applicationId "com.noorhajbi.taskmaster"`
 
-**Build Final APK**
+
+- **Build Final APK**  
 Build an APK for the task master application. Include that APK in the GitHub repo.
 
 ## Deployment to Play Store
 `I didn't deploy the app due the 25$ registration fee `
+
+![PlayStore payment policies](../screenshots/lab34/PlayStorePayment.png)
+
 
 In the Google Play Console, follow the checklist for uploading your app to the Play Store.  
 

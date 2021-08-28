@@ -15,9 +15,24 @@ Allow users to log out of your application.
 
 ## Screen Shots
 
+- *Settings page for adding a username and selecting a team name.*
+![Settings Page](/screenshots/lab33/settings.jpg)
 
-Stretch Goals
-Cache data fetched from DynamoDB into your local Room database.
+- *We can add a task.*
+![Add Task](/screenshots/lab33/add_a_task.jpg)
+
+- *Home page after adding that task*
+![Home Page](/screenshots/lab33/home_page.jpg)
+
+- *Detail page of a task*
+
+![Detail Page](/screenshots/lab32/detail_page.jpg)
+
+- *All tasks page*
+
+![All Tasks Page](/screenshots/lab26/all_tasks.png)
+
+
 
 
 3 pts Cognito added with login and signup
@@ -37,4 +52,4 @@ Cache data fetched from DynamoDB into your local Room database.
 |Lab: 31|[Espresso and Polish](labs/LAB31.md)|
 |Lab: 32|[Integrating AWS for Cloud Data Storage](labs/LAB32.md)|
 |Lab: 33|[Related Data](labs/LAB33.md)|
-|Lab: 34|[Play Store](labs/LAB34.md)|
+|Lab: 34|[Publishing to the Play Store](labs/LAB34.md)|

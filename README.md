@@ -1,38 +1,47 @@
 # taskmaster
 
-# Lab: 33 - Related Data
-Is to use AWS Amplify as a backend also. 
+# Lab: 34 - Publishing to the Play Store
+
+Is to go through the process of publishing to the Google Play Store.
 
 ## Feature Tasks
-**Tasks Are Owned By Teams**
-- Create a second entity for a team, which has a name and a list of tasks.
-So, tasks will be Updated to be owned by a team.
+- **App Polish**
+Ensure that the task master application follows Google’s guidelines.
 
-- Manually create three teams.
-
-## Add Task Form
-- Modify Add Task form to include either a Spinner or Radio Buttons for which team that task belongs to.
+`I added unique Id for my app`
+` applicationId "com.noorhajbi.taskmaster"`
 
 
-## Settings Page
-- In addition to a username, allow the user to choose their team on the Settings page. 
+- **Build Final APK**  
+Build an APK for the task master application. Include that APK in the GitHub repo.
 
-## Testing
-Add to your Espresso tests some functionality about the new Team entity.
+## Deployment to Play Store
+`I didn't deploy the app due the 25$ registration fee `
 
-## Stretch Goals
-Cache data fetched from DynamoDB into your local Room database.
+![PlayStore payment policies](/screenshots/lab34/PlayStorePayment.png)
+
+
+In the Google Play Console, follow the checklist for uploading your app to the Play Store. 
 
 ## Screen Shots
 
 - *Settings page for adding a username and selecting a team name.*
-![Settings Page](screenshots/lab33/settings.jpg)
+![Settings Page](/screenshots/lab33/settings.jpg)
 
 - *We can add a task.*
-![Add Task](screenshots/lab33/add_a_task.jpg)
+![Add Task](/screenshots/lab33/add_a_task.jpg)
 
 - *Home page after adding that task*
-![Home Page](screenshots/lab33/home_page.jpg)
+![Home Page](/screenshots/lab33/home_page.jpg)
+
+- *Detail page of a task*
+
+![Detail Page](/screenshots/lab32/detail_page.jpg)
+
+- *All tasks page*
+
+![All Tasks Page](/screenshots/lab26/all_tasks.png)
+
 
 
 
@@ -47,3 +56,4 @@ Cache data fetched from DynamoDB into your local Room database.
 |Lab: 31|[Espresso and Polish](labs/LAB31.md)|
 |Lab: 32|[Integrating AWS for Cloud Data Storage](labs/LAB32.md)|
 |Lab: 33|[Related Data](labs/LAB33.md)|
+|Lab: 34|[Publishing to the Play Store](labs/LAB34.md)|

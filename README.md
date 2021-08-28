@@ -1,12 +1,16 @@
 # taskmaster
 
-# Lab: 34 - Related Data
+# Lab: 34 - Publishing to the Play Store
 
 Is to go through the process of publishing to the Google Play Store.
 
 ## Feature Tasks
+
 **App Polish**
 Ensure that the task master application follows Google’s guidelines.
+
+`I added unique Id for my app`
+` applicationId "com.noorhajbi.taskmaster"`
 
 
 **Build Final APK**
@@ -50,4 +54,4 @@ In the Google Play Console, follow the checklist for uploading your app to the P
 |Lab: 31|[Espresso and Polish](labs/LAB31.md)|
 |Lab: 32|[Integrating AWS for Cloud Data Storage](labs/LAB32.md)|
 |Lab: 33|[Related Data](labs/LAB33.md)|
-|Lab: 34|[Related Data](labs/LAB34.md)|
+|Lab: 34|[Publishing to the Play Store](labs/LAB34.md)|

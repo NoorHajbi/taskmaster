@@ -1,4 +1,4 @@
-# Lab: 34 - Related Data
+# Lab: 34 - Publishing to the Play Store
 
 Is to go through the process of publishing to the Google Play Store.
 
@@ -6,6 +6,8 @@ Is to go through the process of publishing to the Google Play Store.
 **App Polish**
 Ensure that the task master application follows Google’s guidelines.
 
+`I added unique Id for my app`
+` applicationId "com.noorhajbi.taskmaster"`
 
 **Build Final APK**
 Build an APK for the task master application. Include that APK in the GitHub repo.

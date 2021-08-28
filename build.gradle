@@ -13,6 +13,7 @@ buildscript {
         //lab32
         // Add this line into `dependencies` in `buildscript`
         classpath 'com.amplifyframework:amplify-tools-gradle-plugin:1.0.2'
+
     }
 }
 
@@ -29,3 +30,4 @@ task clean(type: Delete) {
 //lab32
 // Add this line at the end of the file
 apply plugin: 'com.amplifyframework.amplifytools'
+

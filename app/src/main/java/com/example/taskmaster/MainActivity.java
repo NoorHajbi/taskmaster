@@ -10,6 +10,7 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
@@ -19,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.amplifyframework.api.graphql.model.ModelQuery;
+import com.amplifyframework.auth.options.AuthSignOutOptions;
 import com.amplifyframework.datastore.generated.model.State;
 
 import androidx.annotation.RequiresApi;
@@ -37,6 +39,7 @@ import com.example.taskmaster.adapter.TaskAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -62,8 +65,17 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         TextView teamName = findViewById(R.id.textMain_teamName);
+        TextView loggedInUser = findViewById(R.id.textMain_logInUser);
         selectedTeam = preferences.getString("selectedTeam", "Go to Settings to set your team name");
         teamName.setText(selectedTeam);
+
+        String myUser = preferences.getString("loggedInUser", "");
+        loggedInUser.setText(myUser);
+
+
+//        Intent intent = getIntent();
+//        CharSequence userName = intent.getCharSequenceExtra("loggedInUser");
+//        setTitle(userName);
 //        myTeam = preferences.getString("selectedTeamName", "team1");
 
 
@@ -71,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 //            queryAPITasks();
 //            Log.i(TAG, "NET: the network is available");
 //        } else {
-        tasks = queryDataStore();
+//        tasks = queryDataStore();
 //            Log.i(TAG, "NET: net down");
 //        }
 
@@ -83,24 +95,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         selectedTeam = preferences.getString("selectedTeam", " ");
         //        myTeam = preferences.getString("selectedTeamName", "team1");
 
 
         /*Lab32*/
-        try {
-            Amplify.addPlugin(new AWSDataStorePlugin());
-            Amplify.addPlugin(new AWSApiPlugin());
-            Amplify.configure(getApplicationContext());
-            Log.i("Task", "Initialized Amplify");
-//            buildTeams();  //they are already POSTed
-
-        } catch (AmplifyException e) {
-            Log.e("Task", "Could not initialize Amplify", e);
-        }
+//        try {
+//            Amplify.addPlugin(new AWSDataStorePlugin());
+//            Amplify.addonCreateOptionsMenuPlugin(new AWSApiPlugin());
+//            Amplify.configure(getApplicationContext());
+//            Log.i("Task", "Initialized Amplify");
+////            buildTeams();  //they are already POSTed
+//
+//        } catch (AmplifyException e) {
+//            Log.e("Task", "Could not initialize Amplify", e);
+//        }
 
         setContentView(R.layout.activity_main);
+
+
         tasks = new ArrayList<>();
         RecyclerView taskRecyclerView = findViewById(R.id.recyclerView_task);
 
@@ -114,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
 //            tasks = queryAPITasks();
 //            Log.i(TAG, "NET: the network is available");
 //        } else {
-        tasks = queryDataStore();
+//        tasks = queryDataStore();
 //            Log.i(TAG, "NET: net down");
 //        }
 
@@ -176,20 +191,20 @@ public class MainActivity extends AppCompatActivity {
         /*End of Lab28*/
         Button navToAddTask = MainActivity.this.findViewById(R.id.buttonMain_addTask);
         navToAddTask.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, AddATask.class);
-            startActivity(intent);
+            Intent newIntent = new Intent(MainActivity.this, AddATask.class);
+            startActivity(newIntent);
         });
 
         Button navToAllTasks = MainActivity.this.findViewById(R.id.buttonMain_allTask);
         navToAllTasks.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, AllTasks.class);
-            startActivity(intent);
+            Intent newIntent = new Intent(MainActivity.this, AllTasks.class);
+            startActivity(newIntent);
         });
 
         ImageButton navToSettingsButton = MainActivity.this.findViewById(R.id.buttonMain_settings);
         navToSettingsButton.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, Settings.class);
-            startActivity(intent);
+            Intent newIntent = new Intent(MainActivity.this, Settings.class);
+            startActivity(newIntent);
         });
 
 
@@ -254,7 +269,29 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(MainActivity.this, Settings.class);
+            startActivity(intent);
             return true;
+        }
+
+        if (id == R.id.action_task) {
+            Intent intent = new Intent(MainActivity.this, AddATask.class);
+            startActivity(intent);
+            return true;
+        }
+
+
+        if (id == R.id.action_logout) {
+            Amplify.Auth.signOut(
+                    AuthSignOutOptions.builder().globalSignOut(true).build(),
+                    () -> {
+                        Log.i("AuthQuickstart", "Signed out globally");
+                        Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+                        startActivity(intent);
+                    },
+                    error -> Log.e("AuthQuickstart", error.toString())
+            );
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -387,5 +424,4 @@ public class MainActivity extends AppCompatActivity {
         );
 
     }
-
 }

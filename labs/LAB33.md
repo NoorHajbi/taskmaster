@@ -16,19 +16,20 @@ So, tasks will be Updated to be owned by a team.
 ## Settings Page
 - In addition to a username, allow the user to choose their team on the Settings page. 
 
-## Testing
-Add to your Espresso tests some functionality about the new Team entity.
 
-## Stretch Goals
-Cache data fetched from DynamoDB into your local Room database.
 
 ## Screen Shots
 
 - *Settings page for adding a username and selecting a team name.*
-![Settings Page](../screenshots/lab33/settings.jpg)
+  
+![Settings Page](../screenshots/lab33/settings.png)
 
+  
 - *We can add a task.*
-![Add Task](../screenshots/lab33/add_a_task.jpg)
+  
+![Add Task](../screenshots/lab33/add_a_task.png)
 
-- *Home page after adding that task*
-![Home Page](../screenshots/lab33/home_page.jpg)
+  
+- *Home page after adding a task*
+  
+![Home Page](../screenshots/lab33/home_page.png)

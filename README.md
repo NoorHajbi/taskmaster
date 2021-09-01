@@ -1,39 +1,46 @@
 # taskmaster
 
-# Lab: 33 - Related Data
-Is to use AWS Amplify as a backend also. 
+# Lab: 36 - Cognito
+- Is to allow users to sign up and log in using Cognito.
 
 ## Feature Tasks
-**Tasks Are Owned By Teams**
-- Create a second entity for a team, which has a name and a list of tasks.
-So, tasks will be Updated to be owned by a team.
 
-- Manually create three teams.
+### User Login
+- Add Cognito to Amplify setup.
+- Add in user login and sign up flows to taskmaster application, using Cognito’s pre-built UI as appropriate. 
+- Display the logged in user’s username in MainActivity page.
 
-## Add Task Form
-- Modify Add Task form to include either a Spinner or Radio Buttons for which team that task belongs to.
+### User Logout
+- Allow users to log out of your application.
 
-
-## Settings Page
-- In addition to a username, allow the user to choose their team on the Settings page. 
-
-## Testing
-Add to your Espresso tests some functionality about the new Team entity.
-
-## Stretch Goals
-Cache data fetched from DynamoDB into your local Room database.
 
 ## Screen Shots
 
-- *Settings page for adding a username and selecting a team name.*
-![Settings Page](screenshots/lab33/settings.jpg)
+- *Signup page*
+  
+![Signup Page](/screenshots/lab36/signup_page.png)
 
-- *We can add a task.*
-![Add Task](screenshots/lab33/add_a_task.jpg)
+  
+- *Login page*
+  
+![Login Page](/screenshots/lab36/login_page.png)
 
-- *Home page after adding that task*
-![Home Page](screenshots/lab33/home_page.jpg)
+  
+- *Verification page*
+  
+![Verification page](/screenshots/lab36/verification_page.png)
 
+  
+- *Displayed username*
+  
+![Displayed username](/screenshots/lab36/displayed_username.png)
+
+
+
+## Resources:
+- [Class36](https://github.com/joj5/401-TEMP/tree/main/curriculum/class-36)
+- [Signout](https://docs.amplify.aws/lib/auth/signOut/q/platform/android/).
+- [onBackPressed - Close the app](https://stackoverflow.com/questions/21253303/exit-android-app-on-back-pressed/36739050).
 
 
 ## Previous labs documentation
@@ -47,3 +54,5 @@ Cache data fetched from DynamoDB into your local Room database.
 |Lab: 31|[Espresso and Polish](labs/LAB31.md)|
 |Lab: 32|[Integrating AWS for Cloud Data Storage](labs/LAB32.md)|
 |Lab: 33|[Related Data](labs/LAB33.md)|
+|Lab: 34|[Publishing to the Play Store](labs/LAB34.md)|
+|Lab: 36|[Cognito](labs/LAB36.md)|

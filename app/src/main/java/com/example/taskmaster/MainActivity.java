@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.amplifyframework.api.graphql.model.ModelQuery;
+import com.amplifyframework.auth.options.AuthSignOutOptions;
 import com.amplifyframework.datastore.generated.model.State;
 
 import androidx.annotation.RequiresApi;
@@ -67,8 +68,13 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         TextView teamName = findViewById(R.id.textMain_teamName);
+        TextView loggedInUser = findViewById(R.id.textMain_logInUser);
         selectedTeam = preferences.getString("selectedTeam", "Go to Settings to set your team name");
         teamName.setText(selectedTeam);
+
+        String myUser = preferences.getString("loggedInUser", "");
+        loggedInUser.setText(myUser);
+
 
 //        Intent intent = getIntent();
 //        CharSequence userName = intent.getCharSequenceExtra("loggedInUser");
@@ -275,6 +281,20 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, AddATask.class);
             startActivity(intent);
             return true;
+        }
+
+
+        if (id == R.id.action_logout) {
+            Amplify.Auth.signOut(
+                    AuthSignOutOptions.builder().globalSignOut(true).build(),
+                    () -> {
+                        Log.i("AuthQuickstart", "Signed out globally");
+                        Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+                        startActivity(intent);
+                    },
+                    error -> Log.e("AuthQuickstart", error.toString())
+            );
+
         }
 
         return super.onOptionsItemSelected(item);

@@ -7,12 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
@@ -22,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.amplifyframework.api.graphql.model.ModelQuery;
+import com.amplifyframework.auth.options.AuthSignOutOptions;
 import com.amplifyframework.datastore.generated.model.State;
 
 import androidx.annotation.RequiresApi;
@@ -40,6 +39,7 @@ import com.example.taskmaster.adapter.TaskAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import io.reactivex.annotations.NonNull;
 
@@ -48,13 +48,13 @@ public class MainActivity extends AppCompatActivity {
     public static final String TASK_NAME = "task_name";
     public static final String TASK_BODY = "task_body";
     public static final String TASK_STATE = "task_state";
-
     private static final String TAG = "MainActivity";
     private List<Task> tasks;
     private TaskAdapter adapter;
     private Handler handler;
     private List<Team> teams;
-
+    private String selectedTeam;
+    private SharedPreferences preferences;
 
 //    AppDatabase database;
 //    private TaskDao taskDao;
@@ -70,10 +70,30 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() { // this is probably the correct place for ALL rendered info
 
         super.onResume();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         TextView teamName = findViewById(R.id.textMain_teamName);
-        teamName.setText(preferences.getString("selectedTeam", "Go to Settings to set your team name"));
-        queryDataStore();
+        TextView loggedInUser = findViewById(R.id.textMain_logInUser);
+        selectedTeam = preferences.getString("selectedTeam", "Go to Settings to set your team name");
+        teamName.setText(selectedTeam);
+
+        String myUser = preferences.getString("loggedInUser", "");
+        loggedInUser.setText(myUser);
+
+
+//        Intent intent = getIntent();
+//        CharSequence userName = intent.getCharSequenceExtra("loggedInUser");
+//        setTitle(userName);
+//        myTeam = preferences.getString("selectedTeamName", "team1");
+
+
+//        if (isNetworkAvailable(getApplicationContext())) {
+//            queryAPITasks();
+//            Log.i(TAG, "NET: the network is available");
+//        } else {
+//        tasks = queryDataStore();
+//            Log.i(TAG, "NET: net down");
+//        }
+
     }
 
 
@@ -82,40 +102,45 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*Lab32*/
-        try {
-            Amplify.addPlugin(new AWSDataStorePlugin());
-            Amplify.addPlugin(new AWSApiPlugin());
-            Amplify.configure(getApplicationContext());
-            Log.i("Task", "Initialized Amplify");
-            buildTeams();
 
-        } catch (AmplifyException e) {
-            Log.e("Task", "Could not initialize Amplify", e);
-        }
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        selectedTeam = preferences.getString("selectedTeam", " ");
+        //        myTeam = preferences.getString("selectedTeamName", "team1");
+
+
+        /*Lab32*/
+//        try {
+//            Amplify.addPlugin(new AWSDataStorePlugin());
+//            Amplify.addonCreateOptionsMenuPlugin(new AWSApiPlugin());
+//            Amplify.configure(getApplicationContext());
+//            Log.i("Task", "Initialized Amplify");
+////            buildTeams();  //they are already POSTed
+//
+//        } catch (AmplifyException e) {
+//            Log.e("Task", "Could not initialize Amplify", e);
+//        }
 
         setContentView(R.layout.activity_main);
+
+
         tasks = new ArrayList<>();
-
-        handler = new Handler(Looper.getMainLooper(),
-                new Handler.Callback() {
-                    @Override
-                    public boolean handleMessage(@NonNull Message message) {
-                        listItemDeleted();
-                        return false;
-                    }
-                });
-
-        if (isNetworkAvailable(getApplicationContext())) {
-            tasks =getDataAPI();
-            Log.i(TAG, "NET: the network is available");
-        } else {
-            tasks = queryDataStore();
-            Log.i(TAG, "NET: net down");
-        }
-
-
         RecyclerView taskRecyclerView = findViewById(R.id.recyclerView_task);
+
+
+//        handler = new Handler(Looper.getMainLooper(),
+//                msg -> {
+//                    Objects.requireNonNull(taskRecyclerView.getAdapter()).notifyDataSetChanged();
+//                    return false;
+//                });
+//        if (isNetworkAvailable(getApplicationContext())) {
+//            tasks = queryAPITasks();
+//            Log.i(TAG, "NET: the network is available");
+//        } else {
+//        tasks = queryDataStore();
+//            Log.i(TAG, "NET: net down");
+//        }
+
+
 
         /*Lab29*/
 //        database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "task_DB")
@@ -132,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
 //        tasks.add(new Task("Done", "Trash body"));
 
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor preferenceEditor = preferences.edit();
         adapter = new TaskAdapter(tasks, new TaskAdapter.OnTaskItemClickListener() {
 
@@ -174,20 +198,20 @@ public class MainActivity extends AppCompatActivity {
         /*End of Lab28*/
         Button navToAddTask = MainActivity.this.findViewById(R.id.buttonMain_addTask);
         navToAddTask.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, AddATask.class);
-            startActivity(intent);
+            Intent newIntent = new Intent(MainActivity.this, AddATask.class);
+            startActivity(newIntent);
         });
 
         Button navToAllTasks = MainActivity.this.findViewById(R.id.buttonMain_allTask);
         navToAllTasks.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, AllTasks.class);
-            startActivity(intent);
+            Intent newIntent = new Intent(MainActivity.this, AllTasks.class);
+            startActivity(newIntent);
         });
 
         ImageButton navToSettingsButton = MainActivity.this.findViewById(R.id.buttonMain_settings);
         navToSettingsButton.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, Settings.class);
-            startActivity(intent);
+            Intent newIntent = new Intent(MainActivity.this, Settings.class);
+            startActivity(newIntent);
         });
 
 
@@ -199,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
         notificationManager.createNotificationChannel(channel);
 
 
-//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        preferences = PreferenceManager.getDefaultSharedPreferences(this);
 //        SharedPreferences.Editor preferenceEditor = preferences.edit();
 //
 //        Button selectFirstTask = MainActivity.this.findViewById(R.id.button_firstTask);
@@ -252,7 +276,29 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(MainActivity.this, Settings.class);
+            startActivity(intent);
             return true;
+        }
+
+        if (id == R.id.action_task) {
+            Intent intent = new Intent(MainActivity.this, AddATask.class);
+            startActivity(intent);
+            return true;
+        }
+
+
+        if (id == R.id.action_logout) {
+            Amplify.Auth.signOut(
+                    AuthSignOutOptions.builder().globalSignOut(true).build(),
+                    () -> {
+                        Log.i("AuthQuickstart", "Signed out globally");
+                        Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+                        startActivity(intent);
+                    },
+                    error -> Log.e("AuthQuickstart", error.toString())
+            );
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -278,49 +324,64 @@ public class MainActivity extends AppCompatActivity {
 //                success -> Log.i("Tutorial", "Saved item: " + item.getTitle()),
 //                error -> Log.e("Tutorial", "Could not save item to DataStore", error));
 
-        /**
-         * goal Cache data fetched from DynamoDB into your local Room database.
-         */
-
     }
 
+    public boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager =
+                ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager
+                .getActiveNetworkInfo().isConnected();
+    }
 
-    public  synchronized List<Task> getDataAPI()  {
-        Log.i(TAG, "");
-        Amplify.API.query(ModelQuery.list(Task.class),
+    public synchronized List<Task> queryAPITasks() {
+        preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+
+        Amplify.API.query(
+                ModelQuery.list(Task.class),
                 response -> {
+                    tasks.clear();
                     for (Task task : response.getData()) {
-                        tasks.add(task);
-                        Log.i(TAG, " => " + task);
+                        if (preferences.contains("selectedTeam")) {
+                            if (task.getTeam().getName().equals(selectedTeam)) {
+                                tasks.add(task);
+                            }
+                        } else {
+                            tasks.add(task);
+                        }
                     }
                     handler.sendEmptyMessage(1);
+                    Log.i("amplify.queryItems", "Got this many: " + tasks.size());
                 },
-                error -> Log.e(TAG, " => " + error.toString())
+                error -> Log.i("Amplify.queryItems", "Did not receive tasks")
         );
         return tasks;
     }
+
+
     /**
      * queryDataStore()
      *
      * @return List of amplifyTasks
      */
     public synchronized List<Task> queryDataStore() {
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         List<Task> tasks = new ArrayList<>();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
         Amplify.DataStore.query(Task.class
                 ,
                 amplifyTasks -> {
-                    tasks.clear();
+//                    tasks.clear();
                     while (amplifyTasks.hasNext()) {
                         Task oneTask = amplifyTasks.next();
-//                        if (preferences.contains("selectedTeam")) {
-//                            if (oneTask.getTeam().getName().equals(preferences.getString("selectedTeam", " "))) {
+                        if (preferences.contains("selectedTeam")) {
+//                            if (oneTask.getTeam().getName().equals(selectedTeam)) {
 //                                tasks.add(oneTask);
 //                            }
 //                        } else {
-                        tasks.add(oneTask);
-//                        }
-//                        }
+                            tasks.add(oneTask);
+                        }
+                        System.out.println("tttteeeeeeeeeeeeeeeeeeeeeaaaaaaaaaaaaaaaaaaaaaaaaaaam" + oneTask.getTeam().getName());
+
                         Log.i("Task", "==== Task ====");
                         Log.i("Task", "Title: " + oneTask.getTitle());
                         if (oneTask.getBody() != null) {
@@ -328,6 +389,9 @@ public class MainActivity extends AppCompatActivity {
                         }
                         if (oneTask.getState() != null) {
                             Log.i("Task", "State: " + oneTask.getState().toString());
+                        }
+                        if (oneTask.getTeam().getName() != null) {
+                            Log.i("Task", "State: " + oneTask.getTeam().getName().toString());
                         }
                         Log.i("Tutorial", "==== Task End ====");
                     }
@@ -366,23 +430,5 @@ public class MainActivity extends AppCompatActivity {
                 error -> Log.e("team", "failed")
         );
 
-    }
-
-    public static boolean isNetworkAvailable(Context context) {
-        try {/*from  w w w  .  ja  v a2  s .co  m*/
-            ConnectivityManager connectivity = (ConnectivityManager) context
-                    .getSystemService(Context.CONNECTIVITY_SERVICE);
-            if (connectivity != null) {
-                NetworkInfo info = connectivity.getActiveNetworkInfo();
-                if (info != null && info.isConnected()) {
-                    if (info.getState() == NetworkInfo.State.CONNECTED) {
-                        return true;
-                    }
-                }
-            }
-        } catch (Exception e) {
-            return false;
-        }
-        return false;
     }
 }

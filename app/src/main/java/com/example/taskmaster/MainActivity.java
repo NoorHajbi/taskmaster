@@ -86,13 +86,13 @@ public class MainActivity extends AppCompatActivity {
 //        myTeam = preferences.getString("selectedTeamName", "team1");
 
 
-//        if (isNetworkAvailable(getApplicationContext())) {
-//            queryAPITasks();
-//            Log.i(TAG, "NET: the network is available");
-//        } else {
-//        tasks = queryDataStore();
-//            Log.i(TAG, "NET: net down");
-//        }
+        if (isNetworkAvailable(getApplicationContext())) {
+            queryAPITasks();
+            Log.i(TAG, "NET: the network is available");
+        } else {
+        tasks = queryDataStore();
+            Log.i(TAG, "NET: net down");
+        }
 
     }
 
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
 //            Amplify.addonCreateOptionsMenuPlugin(new AWSApiPlugin());
 //            Amplify.configure(getApplicationContext());
 //            Log.i("Task", "Initialized Amplify");
-////            buildTeams();  //they are already POSTed
+//            buildTeams();  //they are already POSTed
 //
 //        } catch (AmplifyException e) {
 //            Log.e("Task", "Could not initialize Amplify", e);
@@ -127,18 +127,18 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView taskRecyclerView = findViewById(R.id.recyclerView_task);
 
 
-//        handler = new Handler(Looper.getMainLooper(),
-//                msg -> {
-//                    Objects.requireNonNull(taskRecyclerView.getAdapter()).notifyDataSetChanged();
-//                    return false;
-//                });
-//        if (isNetworkAvailable(getApplicationContext())) {
-//            tasks = queryAPITasks();
-//            Log.i(TAG, "NET: the network is available");
-//        } else {
-//        tasks = queryDataStore();
-//            Log.i(TAG, "NET: net down");
-//        }
+        handler = new Handler(Looper.getMainLooper(),
+                msg -> {
+                    Objects.requireNonNull(taskRecyclerView.getAdapter()).notifyDataSetChanged();
+                    return false;
+                });
+        if (isNetworkAvailable(getApplicationContext())) {
+            tasks = queryAPITasks();
+            Log.i(TAG, "NET: the network is available");
+        } else {
+        tasks = queryDataStore();
+            Log.i(TAG, "NET: net down");
+        }
 
 
 
@@ -370,14 +370,14 @@ public class MainActivity extends AppCompatActivity {
         Amplify.DataStore.query(Task.class
                 ,
                 amplifyTasks -> {
-//                    tasks.clear();
+                    tasks.clear();
                     while (amplifyTasks.hasNext()) {
                         Task oneTask = amplifyTasks.next();
                         if (preferences.contains("selectedTeam")) {
-//                            if (oneTask.getTeam().getName().equals(selectedTeam)) {
-//                                tasks.add(oneTask);
-//                            }
-//                        } else {
+                            if (oneTask.getTeam().getName().equals(selectedTeam)) {
+                                tasks.add(oneTask);
+                            }
+                        } else {
                             tasks.add(oneTask);
                         }
                         System.out.println("tttteeeeeeeeeeeeeeeeeeeeeaaaaaaaaaaaaaaaaaaaaaaaaaaam" + oneTask.getTeam().getName());

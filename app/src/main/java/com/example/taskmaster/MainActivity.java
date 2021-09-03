@@ -28,11 +28,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.amplifyframework.AmplifyException;
-import com.amplifyframework.api.aws.AWSApiPlugin;
+
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.core.Amplify;
-import com.amplifyframework.datastore.AWSDataStorePlugin;
 import com.amplifyframework.datastore.generated.model.Task;
 import com.amplifyframework.datastore.generated.model.Team;
 import com.example.taskmaster.adapter.TaskAdapter;
@@ -90,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             queryAPITasks();
             Log.i(TAG, "NET: the network is available");
         } else {
-        tasks = queryDataStore();
+            tasks = queryDataStore();
             Log.i(TAG, "NET: net down");
         }
 
@@ -136,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             tasks = queryAPITasks();
             Log.i(TAG, "NET: the network is available");
         } else {
-        tasks = queryDataStore();
+            tasks = queryDataStore();
             Log.i(TAG, "NET: net down");
         }
 

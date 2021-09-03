@@ -1,47 +1,31 @@
 # taskmaster
 
-# Lab: 36 - Cognito
-- Is to allow users to sign up and log in using Cognito.
+# Lab: 37 - S3
+- Is to allow users to upload files related to tasks, like screenshots or log files.
 
 ## Feature Tasks
 
-### User Login
-- Add Cognito to Amplify setup.
-- Add in user login and sign up flows to taskmaster application, using Cognito’s pre-built UI as appropriate. 
-- Display the logged in user’s username in MainActivity page.
+### Uploads
+- On the “Add a Task” activity, allow users to optionally select a file to attach to that task. If a user attaches a file to a task, that file should be uploaded to S3, and associated with that task.
 
-### User Logout
-- Allow users to log out of your application.
-
+### Displaying Files
+- On the Task detail activity, if there is a file that is an image associated with a particular Task, that image should be displayed within that activity. (If the file is any other type, you should display a link to it.)
 
 ## Screen Shots
 
-- *Signup page*
+<!-- - *Signup page*
   
-![Signup Page](/screenshots/lab36/signup_page.png)
+![Signup Page](/screenshots/lab36/signup_page.png) -->
 
   
-- *Login page*
-  
-![Login Page](/screenshots/lab36/login_page.png)
 
-  
-- *Verification page*
-  
-![Verification page](/screenshots/lab36/verification_page.png)
-
-  
-- *Displayed username*
-  
-![Displayed username](/screenshots/lab36/displayed_username.png)
 
 
 
 ## Resources:
-- [Class36](https://github.com/joj5/401-TEMP/tree/main/curriculum/class-36)
-- [Signout](https://docs.amplify.aws/lib/auth/signOut/q/platform/android/).
-- [onBackPressed - Close the app](https://stackoverflow.com/questions/21253303/exit-android-app-on-back-pressed/36739050).
+- [Class37- Demo][https://github.com/joj5/401-TEMP/blob/main/curriculum/class-37/demo]
 
+2 pts Model updates to include file with task
 
 ## Previous labs documentation
 
@@ -56,3 +40,4 @@
 |Lab: 33|[Related Data](labs/LAB33.md)|
 |Lab: 34|[Publishing to the Play Store](labs/LAB34.md)|
 |Lab: 36|[Cognito](labs/LAB36.md)|
+|Lab: 37|[S3](labs/LAB37.md)|

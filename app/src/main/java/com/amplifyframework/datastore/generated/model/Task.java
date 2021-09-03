@@ -1,6 +1,7 @@
 package com.amplifyframework.datastore.generated.model;
 
 import com.amplifyframework.core.model.annotations.BelongsTo;
+import com.amplifyframework.core.model.annotations.HasOne;
 import com.amplifyframework.core.model.temporal.Temporal;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public final class Task implements Model {
   private final @ModelField(targetType="String") String body;
   private final @ModelField(targetType="State") State State;
   private final @ModelField(targetType="Team") @BelongsTo(targetName = "taskTeamId", type = Team.class) Team team;
+  private final @ModelField(targetType="File") @HasOne(associatedWith = "belongsTo", type = File.class) File file = null;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   public String getId() {
@@ -51,6 +53,10 @@ public final class Task implements Model {
   
   public Team getTeam() {
       return team;
+  }
+  
+  public File getFile() {
+      return file;
   }
   
   public Temporal.DateTime getCreatedAt() {

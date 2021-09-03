@@ -17,7 +17,7 @@ type Task @model {
     body: String
     State: State
     team: Team @connection(name: "teamTasks")
-    file: NewFile @connection(name: "fileWithTask")
+    file: File @connection(name: "fileWithTask")
 }
 type File @model{
     id: ID!

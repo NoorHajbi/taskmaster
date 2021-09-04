@@ -34,14 +34,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
+import com.amplifyframework.analytics.AnalyticsEvent;
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Task;
 import com.amplifyframework.datastore.generated.model.Team;
 import com.example.taskmaster.adapter.TaskAdapter;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
@@ -300,13 +299,16 @@ public class MainActivity extends AppCompatActivity {
 //            MainActivity.this.startActivity(i);
 //        });
         getPinpointManager(getApplicationContext());
+        AnalyticsEvent event = AnalyticsEvent.builder()
+                .name("PasswordReset")
+                .addProperty("Channel", "SMS")
+                .addProperty("time", Long.toString(new Date().getTime()))
+                .addProperty("Successful", true)
+                .addProperty("ProcessDuration", 792)
+                .addProperty("UserAge", 120.3)
+                .build();
 
-//        AnalyticsEvent event = AnalyticsEvent.builder()
-//                .name("myEvent")
-//                .addProperty("time", Long.toString(new Date().getTime()))
-//                .addProperty("noor", "let'stry")
-//                .build();
-//        Amplify.Analytics.recordEvent(event);
+        Amplify.Analytics.recordEvent(event);
     }
 
     @SuppressLint("NotifyDataSetChanged")

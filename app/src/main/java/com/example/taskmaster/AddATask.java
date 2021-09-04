@@ -26,6 +26,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.amplifyframework.analytics.AnalyticsEvent;
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
@@ -158,6 +159,14 @@ public class AddATask extends AppCompatActivity {
 //                        .fileName(fileKey)
 //                        .build();
                 //*********************************//
+                AnalyticsEvent event = AnalyticsEvent.builder()
+                        .name("Add a task")
+                        .addProperty("Channel", "SMS")
+                        .addProperty("time", Long.toString(new Date().getTime()))
+                        .addProperty("Successful", true)
+                        .build();
+
+                Amplify.Analytics.recordEvent(event);
 
                 Log.i("Task", "Initialized Amplify");
 

@@ -9,7 +9,7 @@
           "defaultAuthentication": {
             "authenticationType": "API_KEY",
             "apiKeyConfig": {
-              "apiKeyExpirationDays": 35,
+              "apiKeyExpirationDays": 20,
               "description": "taskmasterAPI"
             }
           }
@@ -39,6 +39,12 @@
           "SMS"
         ]
       }
+    }
+  },
+  "storage": {
+    "taskmasterStorage": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation"
     }
   }
 }

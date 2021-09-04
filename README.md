@@ -18,19 +18,14 @@
 
 ## Screen Shots
 
-<!-- - *Before Adding a task*  
-![Before Adding a task](/screenshots/lab37/before_add_a_task.PNG) 
+- *Adding AWS push messege*  
+![Adding AWS push messege](/screenshots/lab38/aws.png) 
 
-- *After Adding a task*  
-![After Adding a task](/screenshots/lab37/after_add_a_task.PNG) 
+- *Adding Firebase notification*  
+![Adding Firebase notification](/screenshots/lab38/firebase.png) 
 
-- *Detail Page*  
-![Detail Page](/screenshots/lab37/detail_page.PNG)  -->
-
-2 pts Model updates and device registration
-2 pts Lambda code for sending notifications
-1 pt Screenshot of a successful notification
-1 pt README with description, screenshots, and daily change log
+- *logcat*  
+![logcat](/screenshots/lab38/logcat.png) 
 
 
 ## Resources:
@@ -51,3 +46,4 @@
 |Lab: 34|[Publishing to the Play Store](labs/LAB34.md)|
 |Lab: 36|[Cognito](labs/LAB36.md)|
 |Lab: 37|[S3](labs/LAB37.md)|
+|Lab: 38|[Notifications](labs/LAB38.md)|

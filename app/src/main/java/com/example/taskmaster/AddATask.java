@@ -151,11 +151,14 @@ public class AddATask extends AppCompatActivity {
                         response -> Log.i("Task", "success!"),
                         error -> Log.e("Task", "Failure", error));
 
-                NewFile newFile = NewFile.builder()
-                        .belongsTo(newTask)
-                        .fileName(fileKey)
-                        .build();
-                
+                //**************Lab37**************//
+
+//                NewFile newFile = NewFile.builder()
+//                        .belongsTo(newTask)
+//                        .fileName(fileKey)
+//                        .build();
+                //*********************************//
+
                 Log.i("Task", "Initialized Amplify");
 
             } catch (Exception e) {
@@ -271,18 +274,17 @@ public class AddATask extends AppCompatActivity {
         startActivityForResult(getPicIntent, REQUEST_FOR_FILE);
     }
 
-    // check the resourse
     private void downloadFile(String fileKey) {
         Amplify.Storage.downloadFile(
                 fileKey,
                 new File(getApplicationContext().getFilesDir() + "/" + fileKey + ".txt"),
                 result -> {
-                    Log.i("Amplify.s3down", "Successfully downloaded: " + result.getFile().getName());
+                    Log.i("MyAmplifyApp", "Successfully downloaded: " + result.getFile().getName());
                     ImageView image = findViewById(R.id.imageView_showFromS3);
                     image.setImageBitmap(BitmapFactory.decodeFile(result.getFile().getPath()));
                     image.setVisibility(View.VISIBLE);
                 },
-                error -> Log.e("Amplify.s3down", "Download Failure", error)
+                error -> Log.e("MyAmplifyApp",  "Download Failure", error)
         );
     }
 

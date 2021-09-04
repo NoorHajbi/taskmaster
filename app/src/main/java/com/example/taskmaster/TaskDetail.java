@@ -57,9 +57,9 @@ public class TaskDetail extends AppCompatActivity {
         detailPageTitle.setText(pref.getString(TASK_NAME, "No task selected"));
         taskTitle.setText(pref.getString(TASK_STATE, "No task selected"));
         taskDescription.setText(pref.getString(TASK_BODY, "No task selected"));
+
         //**************Lab37**************//
         downloadFile(pref.getString("ImageKey", ""));
-
 
     }
 
@@ -68,12 +68,12 @@ public class TaskDetail extends AppCompatActivity {
                 key,
                 new File(getApplicationContext().getFilesDir() + "/" + key + ".txt"),
                 result -> {
-                    Log.i("Amplify.s3down", "Successfully downloaded: " + result.getFile().getName());
+                    Log.i("MyAmplifyApp", "Successfully downloaded: " + result.getFile().getName());
                     ImageView image = findViewById(R.id.imageView_fromS3);
                     image.setImageBitmap(BitmapFactory.decodeFile(result.getFile().getPath()));
                     image.setVisibility(View.VISIBLE);
                 },
-                error -> Log.e("Amplify.s3down", "Download Failure", error)
+                error -> Log.e("MyAmplifyApp", "Download Failure", error)
         );
     }
     //**************End Lab37**************//

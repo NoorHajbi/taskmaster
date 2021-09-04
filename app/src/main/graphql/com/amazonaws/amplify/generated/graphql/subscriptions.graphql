@@ -9,18 +9,11 @@ subscription OnCreateTeam {
         title
         body
         State
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
-      startedAt
     }
-    _version
-    _deleted
-    _lastChangedAt
     createdAt
     updatedAt
   }
@@ -35,18 +28,11 @@ subscription OnUpdateTeam {
         title
         body
         State
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
-      startedAt
     }
-    _version
-    _deleted
-    _lastChangedAt
     createdAt
     updatedAt
   }
@@ -61,18 +47,11 @@ subscription OnDeleteTeam {
         title
         body
         State
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
-      startedAt
     }
-    _version
-    _deleted
-    _lastChangedAt
     createdAt
     updatedAt
   }
@@ -88,17 +67,24 @@ subscription OnCreateTask {
       name
       tasks {
         nextToken
-        startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
-    _version
-    _deleted
-    _lastChangedAt
+    file {
+      id
+      fileName
+      belongsTo {
+        id
+        title
+        body
+        State
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -114,17 +100,24 @@ subscription OnUpdateTask {
       name
       tasks {
         nextToken
-        startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
-    _version
-    _deleted
-    _lastChangedAt
+    file {
+      id
+      fileName
+      belongsTo {
+        id
+        title
+        body
+        State
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -140,17 +133,108 @@ subscription OnDeleteTask {
       name
       tasks {
         nextToken
-        startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
-    _version
-    _deleted
-    _lastChangedAt
+    file {
+      id
+      fileName
+      belongsTo {
+        id
+        title
+        body
+        State
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+subscription OnCreateNewFile {
+  onCreateNewFile {
+    id
+    fileName
+    belongsTo {
+      id
+      title
+      body
+      State
+      team {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      file {
+        id
+        fileName
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+subscription OnUpdateNewFile {
+  onUpdateNewFile {
+    id
+    fileName
+    belongsTo {
+      id
+      title
+      body
+      State
+      team {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      file {
+        id
+        fileName
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+subscription OnDeleteNewFile {
+  onDeleteNewFile {
+    id
+    fileName
+    belongsTo {
+      id
+      title
+      body
+      State
+      team {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      file {
+        id
+        fileName
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }

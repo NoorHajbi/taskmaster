@@ -32,7 +32,7 @@ public final class Task implements Model {
   private final @ModelField(targetType="String") String body;
   private final @ModelField(targetType="State") State State;
   private final @ModelField(targetType="Team") @BelongsTo(targetName = "taskTeamId", type = Team.class) Team team;
-  private final @ModelField(targetType="File") @HasOne(associatedWith = "belongsTo", type = File.class) File file = null;
+  private final @ModelField(targetType="NewFile") @HasOne(associatedWith = "belongsTo", type = NewFile.class) NewFile file = null;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   public String getId() {
@@ -55,7 +55,7 @@ public final class Task implements Model {
       return team;
   }
   
-  public File getFile() {
+  public NewFile getFile() {
       return file;
   }
   

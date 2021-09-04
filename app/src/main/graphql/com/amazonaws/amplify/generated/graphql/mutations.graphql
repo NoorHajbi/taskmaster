@@ -12,18 +12,11 @@ mutation CreateTeam(
         title
         body
         State
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
-      startedAt
     }
-    _version
-    _deleted
-    _lastChangedAt
     createdAt
     updatedAt
   }
@@ -41,18 +34,11 @@ mutation UpdateTeam(
         title
         body
         State
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
-      startedAt
     }
-    _version
-    _deleted
-    _lastChangedAt
     createdAt
     updatedAt
   }
@@ -70,18 +56,11 @@ mutation DeleteTeam(
         title
         body
         State
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
-      startedAt
     }
-    _version
-    _deleted
-    _lastChangedAt
     createdAt
     updatedAt
   }
@@ -100,17 +79,24 @@ mutation CreateTask(
       name
       tasks {
         nextToken
-        startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
-    _version
-    _deleted
-    _lastChangedAt
+    file {
+      id
+      fileName
+      belongsTo {
+        id
+        title
+        body
+        State
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -129,17 +115,24 @@ mutation UpdateTask(
       name
       tasks {
         nextToken
-        startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
-    _version
-    _deleted
-    _lastChangedAt
+    file {
+      id
+      fileName
+      belongsTo {
+        id
+        title
+        body
+        State
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -158,17 +151,117 @@ mutation DeleteTask(
       name
       tasks {
         nextToken
-        startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
-    _version
-    _deleted
-    _lastChangedAt
+    file {
+      id
+      fileName
+      belongsTo {
+        id
+        title
+        body
+        State
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+mutation CreateNewFile(
+  $input: CreateNewFileInput!
+  $condition: ModelNewFileConditionInput
+) {
+  createNewFile(input: $input, condition: $condition) {
+    id
+    fileName
+    belongsTo {
+      id
+      title
+      body
+      State
+      team {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      file {
+        id
+        fileName
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+mutation UpdateNewFile(
+  $input: UpdateNewFileInput!
+  $condition: ModelNewFileConditionInput
+) {
+  updateNewFile(input: $input, condition: $condition) {
+    id
+    fileName
+    belongsTo {
+      id
+      title
+      body
+      State
+      team {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      file {
+        id
+        fileName
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+mutation DeleteNewFile(
+  $input: DeleteNewFileInput!
+  $condition: ModelNewFileConditionInput
+) {
+  deleteNewFile(input: $input, condition: $condition) {
+    id
+    fileName
+    belongsTo {
+      id
+      title
+      body
+      State
+      team {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      file {
+        id
+        fileName
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }

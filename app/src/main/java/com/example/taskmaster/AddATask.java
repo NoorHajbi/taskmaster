@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
+import com.amplifyframework.datastore.generated.model.NewFile;
 import com.amplifyframework.datastore.generated.model.State;
 import com.amplifyframework.datastore.generated.model.Task;
 import com.amplifyframework.datastore.generated.model.Team;
@@ -50,7 +51,7 @@ public class AddATask extends AppCompatActivity {
     private int selectedState;
     List<Team> teams;
     RadioButton team1, team2, team3;
-    String lastFileIUploadedKey;
+    String fileKey;
     public static final int REQUEST_FOR_FILE = 999;
 
 
@@ -139,6 +140,7 @@ public class AddATask extends AppCompatActivity {
                         .team(myTeam)
                         .build();
 
+
                 //send Task to DataStore and API
                 Amplify.DataStore.save(newTask,
                         success -> Log.i("Task", "Saved item: " + success.item().getTitle()),
@@ -149,6 +151,11 @@ public class AddATask extends AppCompatActivity {
                         response -> Log.i("Task", "success!"),
                         error -> Log.e("Task", "Failure", error));
 
+                NewFile newFile = NewFile.builder()
+                        .belongsTo(newTask)
+                        .fileName(fileKey)
+                        .build();
+                
                 Log.i("Task", "Initialized Amplify");
 
             } catch (Exception e) {
@@ -234,8 +241,9 @@ public class AddATask extends AppCompatActivity {
                 exception.printStackTrace();
                 Log.e(TAG, "onActivityResult: file upload failed" + exception.toString());
             }
+            fileKey = new Date().toString() + ".png";
             Amplify.Storage.uploadFile(
-                    new Date().toString() + ".png",
+                    fileKey,
                     uploadFile,
                     success -> {
                         Log.i(TAG, "uploadFileToS3: succeeded " + success.getKey());

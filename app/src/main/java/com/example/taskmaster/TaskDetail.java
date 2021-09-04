@@ -23,7 +23,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amplifyframework.core.Amplify;
-import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.io.FileOutputStream;

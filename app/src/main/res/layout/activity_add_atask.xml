@@ -38,6 +38,7 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="textShortMessage|textPersonName"
+        android:minHeight="48dp"
         android:text="@string/my_task"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.149"
@@ -64,13 +65,13 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:minHeight="48dp"
         android:text="@string/do_something"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.149"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_taskDescription"
 
-        />
+        app:layout_constraintTop_toBottomOf="@+id/text_taskDescription" />
 
     <Spinner
         android:id="@+id/spinner"
@@ -101,24 +102,24 @@
             android:id="@+id/radioButton_team1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="team1"
-            />
+            android:minHeight="48dp"
+            android:text="team1" />
 
         <RadioButton
             android:id="@+id/radioButton_team2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="team2"
+            android:minHeight="48dp"
 
-            />
+            android:text="team2" />
 
         <RadioButton
             android:id="@+id/radioButton_team3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="team3"
+            android:minHeight="48dp"
 
-            />
+            android:text="team3" />
     </RadioGroup>
 
     <Button
@@ -137,12 +138,43 @@
         android:id="@+id/text_totalTasks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="20dp"
         android:text="@string/total_tasks"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.07"
+        app:layout_constraintHorizontal_bias="0.071"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_addTask"
         app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/imageView_showFromS3"
+        android:layout_width="130dp"
+        android:layout_height="150dp"
+        android:layout_marginBottom="100dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.768"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        app:layout_constraintVertical_bias="0.411"
+        app:srcCompat="@android:drawable/picture_frame" />
+
+
+    <Button
+        android:id="@+id/button_addImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@color/purple_500"
+        android:text="Add Image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.755"
+        app:layout_constraintStart_toEndOf="@+id/button_addTask"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+        app:layout_constraintVertical_bias="0.0" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

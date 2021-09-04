@@ -1,19 +1,26 @@
 enum State {
-  NEW,
-  ASSIGNED,
-  IN_PROGRESS,
-  COMPLETE
+    NEW,
+    ASSIGNED,
+    IN_PROGRESS,
+    COMPLETE
 }
 
 type Team @model {
-  id: ID!
-  name: String
-  tasks: [Task] @connection(name: "teamTasks")
+    id: ID!
+    name: String
+    tasks: [Task] @connection(name: "teamTasks")
+
 }
 type Task @model {
-  id: ID!
-  title: String!
-  body: String
-  State: State
-  team: Team @connection(name: "teamTasks")
+    id: ID!
+    title: String!
+    body: String
+    State: State
+    team: Team @connection(name: "teamTasks")
+    file: NewFile @connection(name: "fileWithTask")
+}
+type NewFile @model{
+    id: ID!
+    fileName: String
+    belongsTo: Task! @connection(name: "fileWithTask")
 }

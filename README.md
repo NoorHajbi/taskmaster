@@ -1,30 +1,41 @@
 # taskmaster
 
-# Lab: 33 - Related Data
+# Lab: 38 - Notifications
 
-Is to use AWS Amplify as a backend also. 
+- Is to add the ability for push notifications to be delivered to the app from the cloud.
 
 ## Feature Tasks
-**Tasks Are Owned By Teams**
-- Create a second entity for a team, which has a name and a list of tasks.
-So, tasks will be Updated to be owned by a team.
 
-- Manually create three teams.
+### Notifications on Task Creation
 
-## Add Task Form
-- Modify Add Task form to include either a Spinner or Radio Buttons for which team that task belongs to.
+- When a new task is created within a team, alert all users who are a part of that team about that new task.
 
-
-## Settings Page
-- In addition to a username, allow the user to choose their team on the Settings page. 
-
-## Testing
-Add to your Espresso tests some functionality about the new Team entity.
+- There are several steps involved in allowing this to work:
+    - Store which team a user is part of in the cloud
+    - Add a Lambda trigger on task creation
+    - Use SNS to send a notification as part of that Lambda
 
 
 ## Screen Shots
 
+<!-- - *Before Adding a task*  
+![Before Adding a task](/screenshots/lab37/before_add_a_task.PNG) 
 
+- *After Adding a task*  
+![After Adding a task](/screenshots/lab37/after_add_a_task.PNG) 
+
+- *Detail Page*  
+![Detail Page](/screenshots/lab37/detail_page.PNG)  -->
+
+2 pts Model updates and device registration
+2 pts Lambda code for sending notifications
+1 pt Screenshot of a successful notification
+1 pt README with description, screenshots, and daily change log
+
+
+## Resources:
+- [Class38- Demo](https://github.com/joj5/401-TEMP/tree/main/curriculum/class-38/demo)
+- [Push notifications](https://docs.amplify.aws/sdk/push-notifications/getting-started/q/platform/android/#connect-to-your-backend)
 
 ## Previous labs documentation
 
@@ -37,3 +48,6 @@ Add to your Espresso tests some functionality about the new Team entity.
 |Lab: 31|[Espresso and Polish](labs/LAB31.md)|
 |Lab: 32|[Integrating AWS for Cloud Data Storage](labs/LAB32.md)|
 |Lab: 33|[Related Data](labs/LAB33.md)|
+|Lab: 34|[Publishing to the Play Store](labs/LAB34.md)|
+|Lab: 36|[Cognito](labs/LAB36.md)|
+|Lab: 37|[S3](labs/LAB37.md)|

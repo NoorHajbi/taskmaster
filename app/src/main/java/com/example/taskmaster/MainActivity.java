@@ -34,14 +34,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
+import com.amplifyframework.analytics.AnalyticsEvent;
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Task;
 import com.amplifyframework.datastore.generated.model.Team;
 import com.example.taskmaster.adapter.TaskAdapter;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
@@ -209,6 +208,12 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onItemClicked(int position) {
+                AnalyticsEvent event = AnalyticsEvent.builder()
+                        .name("go from main to detail page")
+                        .addProperty("time", Long.toString(new Date().getTime()))
+                        .addProperty("Successful", true)
+                        .build();
+                Amplify.Analytics.recordEvent(event);
                 Intent goToDetailsIntent = new Intent(getApplicationContext(), TaskDetail.class);
                 preferenceEditor.putString(TASK_NAME, tasks.get(position).getTitle());
                 preferenceEditor.putString(TASK_BODY, tasks.get(position).getBody());
@@ -245,12 +250,24 @@ public class MainActivity extends AppCompatActivity {
         /*End of Lab28*/
         Button navToAddTask = MainActivity.this.findViewById(R.id.buttonMain_addTask);
         navToAddTask.setOnClickListener(view -> {
+            AnalyticsEvent event = AnalyticsEvent.builder()
+                    .name("go from main to add task page")
+                    .addProperty("time", Long.toString(new Date().getTime()))
+                    .addProperty("Successful", true)
+                    .build();
+            Amplify.Analytics.recordEvent(event);
             Intent newIntent = new Intent(MainActivity.this, AddATask.class);
             startActivity(newIntent);
         });
 
         Button navToAllTasks = MainActivity.this.findViewById(R.id.buttonMain_allTask);
         navToAllTasks.setOnClickListener(view -> {
+            AnalyticsEvent event = AnalyticsEvent.builder()
+                    .name("go from main to all task page")
+                    .addProperty("time", Long.toString(new Date().getTime()))
+                    .addProperty("Successful", true)
+                    .build();
+            Amplify.Analytics.recordEvent(event);
             Intent newIntent = new Intent(MainActivity.this, AllTasks.class);
             startActivity(newIntent);
         });
@@ -300,8 +317,16 @@ public class MainActivity extends AppCompatActivity {
 //            MainActivity.this.startActivity(i);
 //        });
         getPinpointManager(getApplicationContext());
+        AnalyticsEvent event = AnalyticsEvent.builder()
+                .name("on main activity")
+                .addProperty("Channel", "SMS")
+                .addProperty("time", Long.toString(new Date().getTime()))
+                .addProperty("Successful", true)
+                .addProperty("ProcessDuration", 792)
+                .addProperty("UserAge", 120.3)
+                .build();
 
-
+        Amplify.Analytics.recordEvent(event);
     }
 
     @SuppressLint("NotifyDataSetChanged")

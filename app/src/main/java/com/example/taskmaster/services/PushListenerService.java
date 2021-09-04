@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.amazonaws.mobileconnectors.pinpoint.targeting.notification.NotificationClient;
@@ -40,10 +41,10 @@ public class PushListenerService extends FirebaseMessagingService {
         Log.i(TAG, "Message: " + remoteMessage.getData().toString());
 
         // this code works from google notification docs
-//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-//                .setContentTitle("Test Notification")
-//                .setContentText(remoteMessage.getData().toString())
-//                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle("Test Notification")
+                .setContentText(remoteMessage.getData().toString())
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         final NotificationClient notificationClient = MainActivity.getPinpointManager(getApplicationContext()).getNotificationClient();
 

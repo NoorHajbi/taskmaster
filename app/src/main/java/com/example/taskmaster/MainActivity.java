@@ -302,7 +302,12 @@ public class MainActivity extends AppCompatActivity {
 //        });
         getPinpointManager(getApplicationContext());
 
-
+//        AnalyticsEvent event = AnalyticsEvent.builder()
+//                .name("myEvent")
+//                .addProperty("time", Long.toString(new Date().getTime()))
+//                .addProperty("noor", "let'stry")
+//                .build();
+//        Amplify.Analytics.recordEvent(event);
     }
 
     @SuppressLint("NotifyDataSetChanged")

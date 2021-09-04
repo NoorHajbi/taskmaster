@@ -14,14 +14,8 @@
 
 ## Screen Shots
 
-<!-- - *Adding AWS push messege*  
-![Adding AWS push messege](/screenshots/lab38/aws.png) 
-
-- *Adding Firebase notification*  
-![Adding Firebase notification](/screenshots/lab38/firebase.png) 
-
-- *logcat*  
-![logcat](/screenshots/lab38/logcat.png)  -->
+- *Events Dashboard*  
+![Events Dashboard](/screenshots/lab39/dashboard.png) 
 
 
 ## Resources:

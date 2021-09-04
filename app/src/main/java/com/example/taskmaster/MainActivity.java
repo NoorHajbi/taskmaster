@@ -208,6 +208,12 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onItemClicked(int position) {
+                AnalyticsEvent event = AnalyticsEvent.builder()
+                        .name("go from main to detail page")
+                        .addProperty("time", Long.toString(new Date().getTime()))
+                        .addProperty("Successful", true)
+                        .build();
+                Amplify.Analytics.recordEvent(event);
                 Intent goToDetailsIntent = new Intent(getApplicationContext(), TaskDetail.class);
                 preferenceEditor.putString(TASK_NAME, tasks.get(position).getTitle());
                 preferenceEditor.putString(TASK_BODY, tasks.get(position).getBody());
@@ -244,12 +250,24 @@ public class MainActivity extends AppCompatActivity {
         /*End of Lab28*/
         Button navToAddTask = MainActivity.this.findViewById(R.id.buttonMain_addTask);
         navToAddTask.setOnClickListener(view -> {
+            AnalyticsEvent event = AnalyticsEvent.builder()
+                    .name("go from main to add task page")
+                    .addProperty("time", Long.toString(new Date().getTime()))
+                    .addProperty("Successful", true)
+                    .build();
+            Amplify.Analytics.recordEvent(event);
             Intent newIntent = new Intent(MainActivity.this, AddATask.class);
             startActivity(newIntent);
         });
 
         Button navToAllTasks = MainActivity.this.findViewById(R.id.buttonMain_allTask);
         navToAllTasks.setOnClickListener(view -> {
+            AnalyticsEvent event = AnalyticsEvent.builder()
+                    .name("go from main to all task page")
+                    .addProperty("time", Long.toString(new Date().getTime()))
+                    .addProperty("Successful", true)
+                    .build();
+            Amplify.Analytics.recordEvent(event);
             Intent newIntent = new Intent(MainActivity.this, AllTasks.class);
             startActivity(newIntent);
         });
@@ -300,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
 //        });
         getPinpointManager(getApplicationContext());
         AnalyticsEvent event = AnalyticsEvent.builder()
-                .name("PasswordReset")
+                .name("on main activity")
                 .addProperty("Channel", "SMS")
                 .addProperty("time", Long.toString(new Date().getTime()))
                 .addProperty("Successful", true)

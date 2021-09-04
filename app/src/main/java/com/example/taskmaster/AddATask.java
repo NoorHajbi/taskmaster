@@ -278,6 +278,12 @@ public class AddATask extends AppCompatActivity {
 
 
     public void retrieveFile() {
+        AnalyticsEvent event = AnalyticsEvent.builder()
+                .name("Going to device to fetch photo")
+                .addProperty("time", Long.toString(new Date().getTime()))
+                .addProperty("Successful", true)
+                .build();
+        Amplify.Analytics.recordEvent(event);
         Intent getPicIntent = new Intent(Intent.ACTION_GET_CONTENT);
         getPicIntent.setType("*/*");
         startActivityForResult(getPicIntent, REQUEST_FOR_FILE);

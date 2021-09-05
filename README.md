@@ -1,16 +1,14 @@
 # taskmaster
 
-# Lab: 38 - Review
+# Lab: 41 - Review
 
-- Is to track users.
+- Is to allow users to **share** a photo from another app and open TaskMaster, ready to upload that image as part of a new task.
 
 ## Feature Tasks
 
-### Tracking Users
+### Adding a Task from Another Application
 
-- Add Analytics to the project. 
-- Create and send an event whenever the intents lunch that start new activities.
-
+- Add an intent filter to the application such that a user can hit the **share** button on an image in another application, choose TaskMaster as the app to share that image with, and be taken directly to the Add a Task activity with that image pre-selected.
 
 ## Screen Shots
 
@@ -19,7 +17,11 @@
 
 
 ## Resources:
-- [ANALYTICS](https://docs.amplify.aws/lib/analytics/getting-started/q/platform/android/)
+- [Allowing Other Apps to Start Your Activity- Code from](https://www.youtube.com/watch?v=j2tXsUKSzeI)
+
+
+4 pts Intent filter added with share functionality
+2 pts README with description, screenshots, and daily change log
 
 ## Previous labs documentation
 

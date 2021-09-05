@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -65,12 +66,28 @@ public class AddATask extends AppCompatActivity {
         team2 = this.findViewById(R.id.radioButton_team2);
         team3 = this.findViewById(R.id.radioButton_team3);
 
+
         if (isNetworkAvailable(getApplicationContext())) {
             queryAPITeams();
         } else {
             queryDataStore();
             Log.i(TAG, "NET: net down");
         }
+//**************Lab41**************//
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if (type.startsWith("image/")) {
+                Uri imageUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+                if (imageUri != null) {
+                    ImageView image = findViewById(R.id.imageView_showFromS3);
+                    image.setImageURI(imageUri);
+                }
+            }
+        }
+
         //**************Lab37**************//
         Button addPic = findViewById(R.id.button_addImage);
         addPic.setOnClickListener((view -> retrieveFile()));
@@ -299,7 +316,7 @@ public class AddATask extends AppCompatActivity {
                     image.setImageBitmap(BitmapFactory.decodeFile(result.getFile().getPath()));
                     image.setVisibility(View.VISIBLE);
                 },
-                error -> Log.e("MyAmplifyApp",  "Download Failure", error)
+                error -> Log.e("MyAmplifyApp", "Download Failure", error)
         );
     }
 

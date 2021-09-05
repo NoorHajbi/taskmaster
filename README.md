@@ -1,28 +1,37 @@
 # taskmaster
 
-# Lab: 41 - Intent Filters
+# Lab: 42 - Location
 
-- Is to allow users to **share** a photo from another app and open TaskMaster, ready to upload that image as part of a new task.
+- Is to add the user’s location to a task automatically when that task is created.
 
 ## Feature Tasks
 
-### Adding a Task from Another Application
+### Location
 
-- Add an intent filter to the application such that a user can hit the **share** button on an image in another application, choose TaskMaster as the app to share that image with, and be taken directly to the Add a Task activity with that image pre-selected.
+- When the user adds a task, their location should be retrieved and included as part of the saved Task.
+
+### Displaying Location
+
+- On the Task Detail activity, the location of a Task should be displayed if it exists.
 
 ## Screen Shots
 
-- *Photo from gallery*  
+<!-- - *Photo from gallery*  
 ![Events Photo from gallery](/screenshots/lab41/photo.png) 
 
 - *Getting the photo*  
 ![Getting the photo](/screenshots/lab41/gettingPhoto.png) 
 
 - *Adding the photo to taskmaster*  
-![Adding the photo](/screenshots/lab41/add_photo.png) 
+![Adding the photo](/screenshots/lab41/add_photo.png)  -->
+
+2 pts Task schema updated with field(s) for location
+3 pts Location saved by the Add a Task activity
+1 pt Location displayed on the Task Detail activity (and doesn’t break for tasks without locations)
+1 pt README with description, screenshots, and daily change log
 
 ## Resources:
-- [Allowing Other Apps to Start Your Activity- Code from](https://www.youtube.com/watch?v=j2tXsUKSzeI)
+<!-- - [Allowing Other Apps to Start Your Activity- Code from](https://www.youtube.com/watch?v=j2tXsUKSzeI) -->
 
 
 ## Previous labs documentation
@@ -42,3 +51,4 @@
 |Lab: 38|[Notifications](labs/LAB38.md)|
 |Lab: 39|[Review](labs/LAB39.md)|
 |Lab: 41|[Intent Filters](labs/LAB41.md)|
+|Lab: 42|[Location](labs/LAB42.md)|

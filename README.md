@@ -1,6 +1,6 @@
 # taskmaster
 
-# Lab: 41 - Review
+# Lab: 41 - Intent Filters
 
 - Is to allow users to **share** a photo from another app and open TaskMaster, ready to upload that image as part of a new task.
 
@@ -12,16 +12,18 @@
 
 ## Screen Shots
 
-- *Events Dashboard*  
-![Events Dashboard](/screenshots/lab39/dashboard.png) 
+- *Photo from gallery*  
+![Events Photo from gallery](/screenshots/lab41/photo.png) 
 
+- *Getting the photo*  
+![Getting the photo](/screenshots/lab41/gettingPhoto.png) 
+
+- *Adding the photo to taskmaster*  
+![Adding the photo](/screenshots/lab41/add_photo.png) 
 
 ## Resources:
 - [Allowing Other Apps to Start Your Activity- Code from](https://www.youtube.com/watch?v=j2tXsUKSzeI)
 
-
-4 pts Intent filter added with share functionality
-2 pts README with description, screenshots, and daily change log
 
 ## Previous labs documentation
 
@@ -39,3 +41,4 @@
 |Lab: 37|[S3](labs/LAB37.md)|
 |Lab: 38|[Notifications](labs/LAB38.md)|
 |Lab: 39|[Review](labs/LAB39.md)|
+|Lab: 41|[Intent Filters](labs/LAB41.md)|

@@ -55,6 +55,7 @@ public class AddATask extends AppCompatActivity {
     RadioButton team1, team2, team3;
     String fileKey;
     public static final int REQUEST_FOR_FILE = 999;
+    ImageView image;
 
 
     @Override
@@ -77,13 +78,13 @@ public class AddATask extends AppCompatActivity {
         Intent intent = getIntent();
         String action = intent.getAction();
         String type = intent.getType();
-
+        image = findViewById(R.id.imageView_showFromS3);
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if (type.startsWith("image/")) {
                 Uri imageUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
                 if (imageUri != null) {
-                    ImageView image = findViewById(R.id.imageView_showFromS3);
                     image.setImageURI(imageUri);
+                    image.setVisibility(View.VISIBLE);
                 }
             }
         }
@@ -312,7 +313,7 @@ public class AddATask extends AppCompatActivity {
                 new File(getApplicationContext().getFilesDir() + "/" + fileKey + ".txt"),
                 result -> {
                     Log.i("MyAmplifyApp", "Successfully downloaded: " + result.getFile().getName());
-                    ImageView image = findViewById(R.id.imageView_showFromS3);
+                    image = findViewById(R.id.imageView_showFromS3);
                     image.setImageBitmap(BitmapFactory.decodeFile(result.getFile().getPath()));
                     image.setVisibility(View.VISIBLE);
                 },

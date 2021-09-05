@@ -3,6 +3,9 @@ plugins {
 
     //lab38
     id 'com.google.gms.google-services'
+
+    //lab42
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -109,7 +112,7 @@ dependencies {
 
     // Overrides an auth dependency to ensure correct behavior
     implementation 'com.google.android.gms:play-services-auth:19.2.0'
-    implementation 'com.amazonaws:aws-android-sdk-pinpoint:2.25.0'
+    implementation 'com.amazonaws:aws-android-sdk-pinpoint:2.26.0'
     implementation ('com.amazonaws:aws-android-sdk-mobile-client:2.26.0@aar') { transitive = true }
 
     // Import the BoM for the Firebase platform
@@ -122,5 +125,11 @@ dependencies {
     //lab39
     // Add these lines in `dependencies`
     implementation 'com.amplifyframework:aws-analytics-pinpoint:1.24.0'
+
+    //lab42
+    implementation 'com.sothree.slidinguppanel:library:3.4.0'
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
+
 
 }
